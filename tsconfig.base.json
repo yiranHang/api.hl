@@ -10,11 +10,45 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@admin-hl/auth": [
+        "libs/auth/src/index.ts"
+      ],
+      "@admin-hl/common": [
+        "libs/common/src/index.ts"
+      ],
+      "@admin-hl/core": [
+        "libs/core/src/index.ts"
+      ],
+      "@admin-hl/database": [
+        "libs/database/src/index.ts"
+      ],
+      "@admin-hl/dm": [
+        "libs/dm/src/index.ts"
+      ],
+      "@admin-hl/documents": [
+        "libs/documents/src/index.ts"
+      ],
+      "@admin-hl/logger": [
+        "libs/logger/src/index.ts"
+      ],
+      "@admin-hl/oa": [
+        "libs/oa/src/index.ts"
+      ],
+      "@admin-hl/system": [
+        "libs/system/src/index.ts"
+      ],
+    }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

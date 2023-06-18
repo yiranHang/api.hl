@@ -1,0 +1,1 @@
+export const BIND_REPOSITORY = Symbol('BIND_REPOSITORY')
