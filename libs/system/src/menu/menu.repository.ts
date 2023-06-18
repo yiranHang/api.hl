@@ -1,6 +1,6 @@
 import { Menu } from './menu.entity'
 import { TreeRepository } from 'typeorm'
-import { BindRepository } from '@admin-hl/database'
+import { BindRepository } from '@admin-api/database'
 
 @BindRepository(Menu)
 export class MenuRepository extends TreeRepository<Menu> {
@@ -19,7 +19,8 @@ export class MenuRepository extends TreeRepository<Menu> {
     }
 
     const ergodicTree = (data: Menu[], root?: Menu) => {
-      const menus: Record<string, unknown>[] = []
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const menus: any[] = []
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const searchKey: any[] = []
       let ishasChildren = false
@@ -28,7 +29,7 @@ export class MenuRepository extends TreeRepository<Menu> {
         const permissions: any = {}
         const { permission, ...arg } = menu
         permission.forEach(p => {
-          permissions[p.code] = `${menu.link}:${p.code}`
+          permissions[p.code as string] = `${menu.link}:${p.code}`
         })
         if (validAcl.includes(`${menu.link}:get`) && permissions['get']) {
           ishasChildren = true
@@ -66,7 +67,7 @@ export class MenuRepository extends TreeRepository<Menu> {
             key: id
           }
           if (!is) {
-            arg.acl = { ability: [''] }
+            arg['acl'] = { ability: [''] }
           }
           searchKey.push(...sk)
           menus.push(arg)

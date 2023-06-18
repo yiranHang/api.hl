@@ -3,7 +3,7 @@ import { RoleService } from './role.service'
 import { RoleController } from './role.controller'
 import { DBOption } from '../system.type'
 import { ConfigService } from '../core/service/config.service'
-import { DataBaseModule } from '@admin-hl/database'
+import { DataBaseModule } from '@admin-api/database'
 import { RoleRepository } from './role.repository'
 
 @Module({})

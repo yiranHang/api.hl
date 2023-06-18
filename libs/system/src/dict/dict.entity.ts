@@ -1,4 +1,4 @@
-import { BaseEntity } from '@admin-hl/database'
+import { BaseEntity } from '@admin-api/database'
 import { Column, Entity, OneToMany } from 'typeorm'
 import { DictDetail } from './dict-detail.entity'
 @Entity({
@@ -7,26 +7,14 @@ import { DictDetail } from './dict-detail.entity'
   }
 })
 export class Dict extends BaseEntity {
-  @Column({
-    unique: true,
-    type: 'varchar',
-    comment: '字典唯一key'
-  })
-  key: string
+  @Column({ unique: true, type: 'varchar', comment: '字典唯一key' })
+  key!: string
 
-  @Column({
-    type: 'varchar',
-    nullable: true,
-    comment: '字典名称'
-  })
-  name: string
+  @Column({ type: 'varchar', nullable: true, comment: '字典名称' })
+  name!: string
 
-  @Column({
-    default: false,
-    type: 'boolean',
-    comment: '是否禁用'
-  })
-  forbidden: boolean
+  @Column({ default: false, type: 'boolean', comment: '是否禁用' })
+  forbidden!: boolean
 
   /**
    * 备注
@@ -35,8 +23,8 @@ export class Dict extends BaseEntity {
    * @memberof User
    */
   @Column({ nullable: true, comment: '备注' })
-  remark: string
+  remark!: string
 
   @OneToMany(() => DictDetail, d => d.dict, { nullable: true })
-  detail: DictDetail[]
+  detail!: DictDetail[]
 }

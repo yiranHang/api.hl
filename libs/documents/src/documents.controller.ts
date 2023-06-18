@@ -17,7 +17,7 @@ import { DocumentsService } from './documents.service'
 import { QueryEntity, TFileOption } from './type'
 import { Response } from 'express'
 import { Documents } from './documents.entity'
-import { WhiteAuthGuard } from '@admin-hl/auth'
+import { WhiteAuthGuard } from '@admin-api/auth'
 
 @Controller('documents')
 export class DocumentsController {

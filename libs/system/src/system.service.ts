@@ -6,7 +6,7 @@ import { Permission } from './permission/permission.entity'
 import { Role } from './role/role.entity'
 import { User } from './user/user.entity'
 import { ConfigService } from './core/service/config.service'
-import { DataBaseSource } from '@admin-hl/database'
+import { DataBaseSource } from '@admin-api/database'
 
 @Injectable()
 export class SystemService {
@@ -129,11 +129,9 @@ export class SystemService {
 
   /**
    * @description:
-   * @admin-hl/author: dailiang
    * @Date: 2022-06-01 16:47:16
    * @param {string} path
    * @return {*}
-   * @LastEditors: dailiang
    */
   private getCompletePath(path: string): string {
     const pathArr = (path: string) => {

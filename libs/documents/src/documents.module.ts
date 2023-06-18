@@ -1,4 +1,4 @@
-import { DataBaseModule } from '@admin-hl/database'
+import { DataBaseModule } from '@admin-api/database'
 import { Module, DynamicModule } from '@nestjs/common'
 import { DocumentsController } from './documents.controller'
 import { DocumentsRepository } from './documents.repository'

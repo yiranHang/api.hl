@@ -1,4 +1,4 @@
-import { BindRepository } from '@admin-hl/database'
+import { BindRepository } from '@admin-api/database'
 import { Repository } from 'typeorm'
 import { Logger } from './logger.entity'
 

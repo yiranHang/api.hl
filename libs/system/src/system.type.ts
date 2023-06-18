@@ -1,10 +1,3 @@
-/*
- * @admin-hl/author: dailiang
- * @Date: 2022-04-18 15:08:00
- * @LastEditors: dailiang
- * @LastEditTime: 2022-06-01 16:59:22
- * @Description:
- */
 import { ModuleMetadata, RequestMethod } from '@nestjs/common'
 import { RouteInfo, Type } from '@nestjs/common/interfaces'
 /* eslint-disable @typescript-eslint/no-explicit-any */

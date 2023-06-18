@@ -1,4 +1,4 @@
-import { DataBaseModule } from '@admin-hl/database'
+import { DataBaseModule } from '@admin-api/database'
 import { DynamicModule, FactoryProvider, Module } from '@nestjs/common'
 import { OaController } from './oa.controller'
 import { OaRepository } from './oa.repository'

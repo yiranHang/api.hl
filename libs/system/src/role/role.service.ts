@@ -4,7 +4,7 @@ import { ConfigService } from '../core/service/config.service'
 import { Pages, QueryEntity } from '../system.type'
 import { RoleRepository } from './role.repository'
 import { Role } from './role.entity'
-import { DataBaseSource } from '@admin-hl/database'
+import { DataBaseSource } from '@admin-api/database'
 
 @Injectable()
 export class RoleService {
