@@ -114,6 +114,9 @@ devDependencies:
   '@types/jest':
     specifier: ^29.4.0
     version: registry.npmmirror.com/@types/jest@29.4.0
+  '@types/js-yaml':
+    specifier: ^4.0.5
+    version: registry.npmmirror.com/@types/js-yaml@4.0.5
   '@types/node':
     specifier: ~18.7.1
     version: registry.npmmirror.com/@types/node@18.7.1
@@ -3606,6 +3609,12 @@ packages:
     dependencies:
       expect: registry.npmmirror.com/expect@29.5.0
       pretty-format: registry.npmmirror.com/pretty-format@29.5.0
+    dev: true
+
+  registry.npmmirror.com/@types/js-yaml@4.0.5:
+    resolution: {integrity: sha512-FhpRzf927MNQdRZP0J5DLIdTXhjLYzeUTmLAu69mnVksLH9CJY3IuSeEgbKUki7GQZm0WqDkGzyxju2EZGD2wA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/js-yaml/-/js-yaml-4.0.5.tgz}
+    name: '@types/js-yaml'
+    version: 4.0.5
     dev: true
 
   registry.npmmirror.com/@types/json-schema@7.0.12:

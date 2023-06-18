@@ -24,7 +24,7 @@ database:
     port: 5432
     database: admin.hl
     username: postgres
-    password: 553ba187b36a267a8d992a2382658658
+    password: 438b00d550d982e15b2672a1461f44b3
     autoLoadEntities: true
     synchronize: true
 

@@ -1,5 +1,5 @@
 import { BaseEntity } from '@admin-api/database'
-import { User } from '@admin-hl/system'
+import { User } from '@admin-api/system'
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm'
 @Entity({
   orderBy: {

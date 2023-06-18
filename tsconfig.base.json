@@ -45,7 +45,7 @@
       "@admin-api/oa": [
         "libs/oa/src/index.ts"
       ],
-      "@admin-hl/system": [
+      "@admin-api/system": [
         "libs/system/src/index.ts"
       ]
     }

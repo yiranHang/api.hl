@@ -129,11 +129,9 @@ export class SystemService {
 
   /**
    * @description:
-   * @admin-api/author: dailiang
    * @Date: 2022-06-01 16:47:16
    * @param {string} path
    * @return {*}
-   * @LastEditors: dailiang
    */
   private getCompletePath(path: string): string {
     const pathArr = (path: string) => {
