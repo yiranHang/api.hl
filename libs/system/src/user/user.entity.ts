@@ -9,26 +9,18 @@ import { Role } from '../role/role.entity'
   }
 })
 export class User extends BaseEntity {
-  @Column({
-    unique: true,
-    type: 'varchar',
-    comment: '账号'
-  })
-  account: string
+  @Column({ unique: true, type: 'varchar', comment: '账号' })
+  account?: string
 
-  @Column({
-    type: 'varchar',
-    nullable: true,
-    comment: '用户名'
-  })
-  name: string
+  @Column({ type: 'varchar', nullable: true, comment: '用户名' })
+  name?: string
 
   @Column({
     default: false,
     type: 'boolean',
     comment: '是否禁用'
   })
-  forbidden: boolean
+  forbidden?: boolean
 
   @Column({
     type: 'int',
@@ -36,14 +28,14 @@ export class User extends BaseEntity {
     default: 0,
     comment: '账号状态(0:正常;1:冻结;2:异常)'
   })
-  status: number
+  status?: number
 
   @Column({
     type: 'varchar',
     comment: '密码',
     nullable: true
   })
-  password: string
+  password?: string
   @BeforeInsert()
   hashPassword(): void {
     let password = '123456A!'
@@ -56,28 +48,16 @@ export class User extends BaseEntity {
    * @description: 用户密码连续输入错误次数超过5次，锁定账号
    */
   @Column({ default: 0, type: 'int', comment: '密码输入错误计数' })
-  count: number
+  count?: number
 
-  @Column({
-    type: 'varchar',
-    comment: '单位',
-    nullable: true
-  })
-  unit: string
+  @Column({ type: 'varchar', comment: '单位', nullable: true })
+  unit?: string
 
-  @Column({
-    type: 'varchar',
-    comment: '职位',
-    nullable: true
-  })
-  position: string
+  @Column({ type: 'varchar', comment: '职位', nullable: true })
+  position?: string
 
-  @Column({
-    type: 'varchar',
-    comment: '标识验证码',
-    nullable: true
-  })
-  token: string
+  @Column({ type: 'varchar', comment: '标识验证码', nullable: true })
+  token?: string
 
   @Column({
     default: false, //false不需要重新设置密码
@@ -85,7 +65,7 @@ export class User extends BaseEntity {
     name: 'nCreated_or_reset',
     type: 'boolean'
   })
-  nCreatedReset: boolean
+  nCreatedReset?: boolean
 
   @Column({
     type: 'timestamptz',
@@ -93,14 +73,9 @@ export class User extends BaseEntity {
     name: 'password_change_time',
     nullable: true
   })
-  passwordChangTime: Date
+  passwordChangTime?: Date
 
-  @Column({
-    type: 'timestamptz',
-    comment: '冻结时间',
-    name: 'freeze_time',
-    nullable: true
-  })
+  @Column({ type: 'timestamptz', comment: '冻结时间', name: 'freeze_time', nullable: true })
   freezeTime?: Date
 
   /**
@@ -110,9 +85,9 @@ export class User extends BaseEntity {
    * @memberof User
    */
   @Column({ nullable: true, comment: '备注' })
-  remark: string
+  remark?: string
 
   @ManyToMany(() => Role, { cascade: true })
   @JoinTable()
-  roles: Role[]
+  roles?: Role[]
 }

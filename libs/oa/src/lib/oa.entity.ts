@@ -8,31 +8,16 @@ import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm'
 })
 export class Oa extends BaseEntity {
   @Index()
-  @Column({
-    type: 'varchar',
-    comment: 'oa 生成的token'
-  })
-  token: string
+  @Column({ type: 'varchar', comment: 'oa 生成的token' })
+  token!: string
 
-  @Column({
-    type: 'varchar',
-    nullable: true,
-    comment: '当前使用的密钥'
-  })
-  sercet: string
+  @Column({ type: 'varchar', nullable: true, comment: '当前使用的密钥' })
+  sercet!: string
 
-  @Column({
-    type: 'varchar',
-    nullable: true,
-    comment: '对应type值'
-  })
-  type: string
+  @Column({ type: 'varchar', nullable: true, comment: '对应type值' })
+  type!: string
 
-  @Column({
-    default: false,
-    type: 'boolean',
-    comment: '该token 是否已经被使用'
-  })
+  @Column({ default: false, type: 'boolean', comment: '该token 是否已经被使用' })
   use?: boolean
 
   @Column({
@@ -43,11 +28,7 @@ export class Oa extends BaseEntity {
   })
   result?: number
 
-  @Column({
-    type: 'varchar',
-    nullable: true,
-    comment: '解析失败原因'
-  })
+  @Column({ type: 'varchar', nullable: true, comment: '解析失败原因' })
   msg?: string
 
   @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })

@@ -3,7 +3,6 @@ import { map, Observable } from 'rxjs'
 import { AuthService } from '../service/auth.service'
 
 import { JwtService } from '@nestjs/jwt'
-// import { Cache } from 'cache-manager';
 import { CustomSign, TFunction, TJwtOption } from '../auth.interface'
 import { isNotEmptyObject } from '../auth.constant'
 

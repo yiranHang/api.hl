@@ -9,18 +9,10 @@ import { NoSafe } from './logger.interface'
   }
 })
 export class Logger extends BaseEntity {
-  @Column({
-    type: 'varchar',
-    nullable: true,
-    comment: '请求ip'
-  })
+  @Column({ type: 'varchar', nullable: true, comment: '请求ip' })
   ip?: string
 
-  @Column({
-    type: 'varchar',
-    nullable: true,
-    comment: '来源某个请求地址'
-  })
+  @Column({ type: 'varchar', nullable: true, comment: '来源某个请求地址' })
   from?: string
 
   /**
@@ -29,11 +21,7 @@ export class Logger extends BaseEntity {
    * @type {NoSafe}
    * @memberof Logger
    */
-  @Column({
-    type: 'simple-json',
-    nullable: true,
-    comment: '输入详细信息'
-  })
+  @Column({ type: 'simple-json', nullable: true, comment: '输入详细信息' })
   input?: NoSafe
   /**
    * 日志分类

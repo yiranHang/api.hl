@@ -1,7 +1,7 @@
 # 应用配置
 application:
   host: localhost
-  port: 4001
+  port: 4000
   passport:
     secret: secretKey
     expiresIn: 24h
@@ -24,7 +24,7 @@ database:
     port: 5432
     database: admin.hl
     username: postgres
-    password: 438b00d550d982e15b2672a1461f44b3
+    password: 609bfd3541c7cb84b5c16dcc5a6479be
     autoLoadEntities: true
     synchronize: true
 

@@ -18,9 +18,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@admin-api/utils": [
-        "libs/utils/src/index.ts"
-      ],
       "@admin-api/auth": [
         "libs/auth/src/index.ts"
       ],

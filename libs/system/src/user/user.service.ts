@@ -33,7 +33,7 @@ export class UserService {
       if (password && user.password !== this.repo.cryptoPassword(password)) {
         throw new HttpException('密码不正确，请重新输入', 401)
       }
-      const { hasMenu } = await this.menu.getRoleMenuAclByUser(user.id)
+      const { hasMenu } = await this.menu.getRoleMenuAclByUser(user.id as string)
       if (!hasMenu) {
         throw new HttpException('当前账号没权限访问', 401)
       }
@@ -44,14 +44,16 @@ export class UserService {
    */
   async loginByPass(data: string) {
     const { userName, password } = CryptoUtil.sm4Decrypt(data) || {}
+    console.log('🚀 ~ UserService ~ password:', password)
+    console.log('🚀 ~ UserService ~ userName:', userName)
     const user = await this.repo.findOne({
       where: { account: Equal(userName) },
       relations: ['roles']
     })
-    await this.validUser(user, password)
-    await this.repo.update(user.id, {
+    await this.validUser(user as User, password)
+    await this.repo.update(user?.id as string, {
       count: 0,
-      freezeTime: null
+      freezeTime: undefined
     })
     return user
   }
@@ -174,7 +176,7 @@ export class UserService {
       })
       .then(r => {
         if (r) {
-          r.roles = r.roles.map(k => k.id) as unknown as Role[]
+          r.roles = r.roles?.map(k => k.id) as unknown as Role[]
         }
         return r
       })
