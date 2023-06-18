@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm'
 import { User } from './user.entity'
 import { CryptoUtil } from '../system.util'
-import { BindRepository } from '@admin-hl/database'
+import { BindRepository } from '@admin-api/database'
 
 @BindRepository(User)
 export class UserRepository extends Repository<User> {

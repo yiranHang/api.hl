@@ -1,4 +1,4 @@
-import { BaseEntity } from '@admin-hl/database'
+import { BaseEntity } from '@admin-api/database'
 import { BeforeInsert, Column, Entity, JoinTable, ManyToMany } from 'typeorm'
 
 import { CryptoUtil } from '../system.util'

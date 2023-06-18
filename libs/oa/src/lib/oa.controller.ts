@@ -1,4 +1,4 @@
-import { WhiteAuthGuard } from '@admin-hl/auth'
+import { WhiteAuthGuard } from '@admin-api/auth'
 import { Controller, Post, Body, UseGuards } from '@nestjs/common'
 import { OaService } from './oa.service'
 

@@ -18,33 +18,36 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@admin-hl/auth": [
+      "@admin-api/utils": [
+        "libs/utils/src/index.ts"
+      ],
+      "@admin-api/auth": [
         "libs/auth/src/index.ts"
       ],
-      "@admin-hl/common": [
+      "@admin-api/common": [
         "libs/common/src/index.ts"
       ],
-      "@admin-hl/core": [
+      "@admin-api/core": [
         "libs/core/src/index.ts"
       ],
-      "@admin-hl/database": [
+      "@admin-api/database": [
         "libs/database/src/index.ts"
       ],
-      "@admin-hl/dm": [
+      "@admin-api/dm": [
         "libs/dm/src/index.ts"
       ],
-      "@admin-hl/documents": [
+      "@admin-api/documents": [
         "libs/documents/src/index.ts"
       ],
-      "@admin-hl/logger": [
+      "@admin-api/logger": [
         "libs/logger/src/index.ts"
       ],
-      "@admin-hl/oa": [
+      "@admin-api/oa": [
         "libs/oa/src/index.ts"
       ],
       "@admin-hl/system": [
         "libs/system/src/index.ts"
-      ],
+      ]
     }
   },
   "exclude": [

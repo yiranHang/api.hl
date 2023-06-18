@@ -6,7 +6,7 @@ import { Menu } from './menu.entity'
 import { Pages, QueryEntity } from '../system.type'
 import { ConfigService } from '../core/service/config.service'
 import { Permission } from '../permission/permission.entity'
-import { DataBaseSource } from '@admin-hl/database'
+import { DataBaseSource } from '@admin-api/database'
 
 @Injectable()
 export class MenuService {

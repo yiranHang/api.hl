@@ -5,7 +5,7 @@ import { QueryEntity } from '../system.type'
 import { UserRepository } from '../user/user.repository'
 import { PermissionRepository } from './permission.repository'
 import { Permission } from './permission.entity'
-import { DataBaseSource, NoSafe } from '@admin-hl/database'
+import { DataBaseSource, NoSafe } from '@admin-api/database'
 
 @Injectable()
 export class PermissionService {

@@ -4,7 +4,7 @@ import { MenuController } from './menu.controller'
 
 import { DBOption } from '../system.type'
 import { ConfigService } from '../core/service/config.service'
-import { DataBaseModule } from '@admin-hl/database'
+import { DataBaseModule } from '@admin-api/database'
 import { MenuRepository } from './menu.repository'
 
 @Module({})

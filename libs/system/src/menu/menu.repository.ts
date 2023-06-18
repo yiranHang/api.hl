@@ -1,6 +1,6 @@
 import { Menu } from './menu.entity'
 import { TreeRepository } from 'typeorm'
-import { BindRepository } from '@admin-hl/database'
+import { BindRepository } from '@admin-api/database'
 
 @BindRepository(Menu)
 export class MenuRepository extends TreeRepository<Menu> {

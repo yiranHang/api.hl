@@ -2,7 +2,7 @@ import { DictService } from './dict.service'
 import { DynamicModule, Module } from '@nestjs/common'
 import { DictController } from './dict.controller'
 import { DBOption } from '../system.type'
-import { DataBaseModule } from '@admin-hl/database'
+import { DataBaseModule } from '@admin-api/database'
 import { DictDetailRepository, DictRepository } from './dict.repository'
 
 @Module({})

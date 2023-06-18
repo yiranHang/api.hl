@@ -7,7 +7,7 @@ import { CryptoUtil } from '../system.util'
 import { Role } from '../role/role.entity'
 import { UserRepository } from './user.repository'
 import { User } from './user.entity'
-import { DataBaseSource } from '@admin-hl/database'
+import { DataBaseSource } from '@admin-api/database'
 import { MenuService } from '../menu/menu.service'
 @Injectable()
 export class UserService {

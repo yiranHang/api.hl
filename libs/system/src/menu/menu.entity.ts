@@ -1,4 +1,4 @@
-import { BaseEntity } from '@admin-hl/database'
+import { BaseEntity } from '@admin-api/database'
 import { Column, Entity, OneToMany, Tree, TreeChildren, TreeParent } from 'typeorm'
 import { Permission } from '../permission/permission.entity'
 @Entity({

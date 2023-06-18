@@ -1,4 +1,4 @@
-import { BaseEntity } from '@admin-hl/database'
+import { BaseEntity } from '@admin-api/database'
 import { Type } from 'class-transformer'
 import { Column, Entity, JoinTable, ManyToMany } from 'typeorm'
 import { Permission } from '../permission/permission.entity'

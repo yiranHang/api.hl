@@ -1,4 +1,4 @@
-import { BaseEntity } from '@admin-hl/database'
+import { BaseEntity } from '@admin-api/database'
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
 import { Dict } from './dict.entity'
 @Entity({

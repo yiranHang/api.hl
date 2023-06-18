@@ -3,7 +3,7 @@ import { PermissionService } from './permission.service'
 import { PermissionController } from './permission.controller'
 import { DBOption } from '../system.type'
 import { ConfigService } from '../core/service/config.service'
-import { DataBaseModule } from '@admin-hl/database'
+import { DataBaseModule } from '@admin-api/database'
 import { PermissionRepository } from './permission.repository'
 
 @Module({})

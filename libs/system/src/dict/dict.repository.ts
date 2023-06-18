@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm'
 import { Dict } from './dict.entity'
-import { BindRepository } from '@admin-hl/database'
+import { BindRepository } from '@admin-api/database'
 import { DictDetail } from './dict-detail.entity'
 
 @BindRepository(Dict)

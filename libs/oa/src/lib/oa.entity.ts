@@ -1,4 +1,4 @@
-import { BaseEntity } from '@admin-hl/database'
+import { BaseEntity } from '@admin-api/database'
 import { User } from '@admin-hl/system'
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm'
 @Entity({
