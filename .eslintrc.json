@@ -24,7 +24,100 @@
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nx/typescript"],
-      "rules": {}
+      "rules": {
+        //需要使用T[]或者Array<T>用于数组
+        "@typescript-eslint/array-type": [
+          "error",
+          {
+            "default": "array"
+          }
+        ],
+        //各类命名规则
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "class",
+            "format": ["StrictPascalCase"]
+          },
+          {
+            "selector": "classMethod",
+            "format": ["strictCamelCase"]
+          },
+          {
+            "selector": "classProperty",
+            "format": ["strictCamelCase"]
+          },
+          {
+            "selector": "variable",
+            "format": ["snake_case", "UPPER_CASE", "strictCamelCase"]
+          },
+          {
+            "selector": "function",
+            "format": ["strictCamelCase", "PascalCase"]
+          }
+        ],
+        //禁止使用特定类型
+        "@typescript-eslint/ban-types": [
+          "off",
+          {
+            "types": {
+              "String": {
+                "message": "Use string instead."
+              },
+              "Number": {
+                "message": "Use number instead."
+              },
+              "Boolean": {
+                "message": "Use boolean instead."
+              },
+              "Function": {
+                "message": "Use specific callable interface instead."
+              }
+            }
+          }
+        ],
+        //禁止混叠this
+        "@typescript-eslint/no-this-alias": "error",
+        //要求一致的成员声明顺序
+        "@typescript-eslint/member-ordering": "off",
+        //不能有空行
+        "no-multiple-empty-lines": "error",
+        //禁止稀疏数组， [1,,2]
+        "no-sparse-arrays": "error",
+        //首选对象传播
+        "prefer-object-spread": "error",
+        //使用模板字面量而非字符串连接
+        "prefer-template": "error",
+        //首选const
+        "prefer-const": "off",
+        //字符串最大长度
+        "max-len": "off",
+        //在创建对象字面量时不允许键重复 {a:1,a:1}
+        "no-dupe-keys": 2,
+        //函数参数不能重复
+        "no-dupe-args": 2,
+        //switch中的case标签不能重复
+        "no-duplicate-case": 2,
+        //块语句中的内容不能为空
+        "no-empty": 2,
+        //不能有空的方法
+        "no-empty-function": [
+          "error",
+          {
+            "allow": ["constructors"]
+          }
+        ],
+        //禁用var，用let和const代替
+        "no-var": 2,
+        //必须使用 if(){} 中的{}
+        "curly": [2, "all"],
+        //必须使用全等
+        "eqeqeq": 2,
+        //命名检测
+        "id-match": 2,
+        //不能有不规则的空格
+        "no-irregular-whitespace": 0
+      }
     },
     {
       "files": ["*.js", "*.jsx"],
