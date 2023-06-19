@@ -150,7 +150,7 @@ export class MenuService {
       throw new HttpException('菜单序号不能为空', 500)
     }
     if (body?.isLeaf) {
-      if (!body?.link) {
+      if (!body?.path) {
         throw new HttpException('叶子菜单，地址不能为空', 500)
       }
     }
@@ -219,17 +219,17 @@ export class MenuService {
     return this.repository.delete(id)
   }
 
-  async checkPathExists(link: string, id: string) {
-    if (!link) {
+  async checkPathExists(path: string, id: string) {
+    if (!path) {
       return null
     }
     if (id) {
       const menu = await this.repository.findOneBy({ id })
-      if (menu?.link === link) {
+      if (menu?.path === path) {
         return null
       }
     }
-    return this.repository.findOneBy({ link })
+    return this.repository.findOneBy({ path })
   }
 
   getListSearch(name: string) {

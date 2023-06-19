@@ -31,8 +31,8 @@ export class SystemService {
         isLeaf: true,
         title: '菜单管理',
         name: 'menuManage',
-        link: this.getLink('menuManage'),
-        path: '/menu',
+        path: this.getLink('menuManage'),
+        url: '/menu',
         icon: 'Menu',
         component: '/system/menuManage/index',
         sort: 3,
@@ -67,8 +67,8 @@ export class SystemService {
       {
         isLeaf: true,
         title: '用户管理',
-        link: this.getLink('userManage'),
-        path: '/user',
+        path: this.getLink('userManage'),
+        url: '/user',
         name: 'userManage',
         icon: 'Menu',
         component: '/system/userManage/index',
@@ -98,8 +98,8 @@ export class SystemService {
       {
         isLeaf: true,
         title: '角色管理',
-        link: this.getLink('roleManage'),
-        path: '/role',
+        path: this.getLink('roleManage'),
+        url: '/role',
         name: 'roleManage',
         icon: 'Menu',
         component: '/system/roleManage/index',
@@ -109,8 +109,8 @@ export class SystemService {
       {
         isLeaf: true,
         title: '字典管理',
-        link: this.getLink('dictManage'),
-        path: '/dict',
+        path: this.getLink('dictManage'),
+        url: '/dict',
         name: 'dictManage',
         icon: 'Menu',
         component: '/system/dictManage/index',
@@ -152,7 +152,7 @@ export class SystemService {
   async setPermission(
     manager: EntityManager,
     me: Menu,
-    mu: Partial<Menu> & { path: string },
+    mu: Partial<Menu> & { url: string },
     role: Role
   ) {
     const permissions: Permission[] = []
@@ -161,7 +161,7 @@ export class SystemService {
       permission.name = key.name
       permission.code = key.code
       permission.menu = me
-      permission.path = this.getCompletePath(key.path || `${mu.path}/:id`)
+      permission.path = this.getCompletePath(key.path || `${mu.url}/:id`)
       permission.method = key.method
       permissions.push(permission)
     }
@@ -178,14 +178,14 @@ export class SystemService {
       const men = new Menu()
       men.isLeaf = mu.isLeaf
       men.name = mu.name
-      men.link = mu.link
+      men.path = mu.path
       men.title = mu.title
       men.icon = mu.icon
       men.component = mu.component
       men.sort = mu.sort
       men.parent = me
       const m = await manager.save(Menu, men)
-      await this.setPermission(manager, m, mu as Partial<Menu> & { path: string }, role)
+      await this.setPermission(manager, m, mu as Partial<Menu> & { url: string }, role)
     }
   }
 
@@ -195,7 +195,7 @@ export class SystemService {
     menu.icon = 'Tools'
     menu.title = '系统管理'
     menu.name = 'system'
-    menu.link = '/system'
+    menu.path = '/system'
     menu.redirect = '/system/user'
     menu.sort = 1
     return manager.save(Menu, menu)

@@ -10,7 +10,7 @@ import { Permission } from '../permission/permission.entity'
 @Tree('closure-table')
 export class Menu extends BaseEntity {
   @Column({ type: 'varchar', unique: true, comment: '路由访问路径' })
-  link!: string
+  path?: string
 
   /** 对应页面组件 name, 可用作 KeepAlive 缓存标识 && 按钮权限筛选 */
   @Column({ type: 'varchar', comment: '路由 name ' })

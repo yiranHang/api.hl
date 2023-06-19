@@ -28,40 +28,64 @@ export class MenuRepository extends TreeRepository<Menu> {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const permissions: any = {}
         const { permission, ...arg } = menu
+        const {
+          icon,
+          title,
+          activeMenu,
+          isLink,
+          isHide,
+          isFull,
+          isAffix,
+          isKeepAlive,
+          ...restarg
+        } = arg
         permission?.forEach(p => {
-          permissions[p.code as string] = `${menu.link}:${p.code}`
+          permissions[p.code as string] = `${menu.path}:${p.code}`
         })
-        if (validAcl.includes(`${menu.link}:get`) && permissions['get']) {
+        if (validAcl.includes(`${menu.path}:get`) && permissions['get']) {
           ishasChildren = true
           /**此处可根据配置决定跳转页 */
-          switchRouter = switchRouter ? switchRouter : menu.link
-          let link = menu.link
+          switchRouter = switchRouter ? switchRouter : (menu.path as string)
+          let path = menu.path
 
           searchKey.push({
             rootText: root?.title || '',
             rootId: root?.id || '',
             text: menu.title,
-            link: link,
+            path: path,
             id: menu.id
           })
         }
         menus.push({
-          ...arg,
-          acl: { ability: [getAcl(menu.link)] },
-          key: arg.id
+          ...restarg,
+          meta: { icon, title, activeMenu, isLink, isHide, isFull, isAffix, isKeepAlive },
+          acl: { ability: [getAcl(menu.path as string)] },
+          key: restarg.id
         })
       }
       data.forEach(d => {
-        const { isLeaf, link, children, id } = d
-        const isOk = isLeaf && link
+        const { isLeaf, path, children, id } = d
+        const isOk = isLeaf && path
         if (isOk) {
           setAcls(d)
         } else if (children?.length) {
           const { menus: m, ishasChildren: is, searchKey: sk } = ergodicTree(children, d)
           d.children = m
           ishasChildren = ishasChildren ? true : is
+          const {
+            icon,
+            title,
+            activeMenu,
+            isLink,
+            isHide,
+            isFull,
+            isAffix,
+            isKeepAlive,
+            ...restd
+          } = d
           const arg: Record<string, unknown> = {
-            ...d,
+            ...restd,
+            meta: { icon, title, activeMenu, isLink, isHide, isFull, isAffix, isKeepAlive },
             key: id
           }
           if (!is) {

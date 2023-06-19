@@ -44,8 +44,6 @@ export class UserService {
    */
   async loginByPass(data: string) {
     const { userName, password } = CryptoUtil.sm4Decrypt(data) || {}
-    console.log('🚀 ~ UserService ~ password:', password)
-    console.log('🚀 ~ UserService ~ userName:', userName)
     const user = await this.repo.findOne({
       where: { account: Equal(userName) },
       relations: ['roles']
@@ -99,9 +97,7 @@ export class UserService {
   async createOne(data: User) {
     this.validCreateUser(data)
     const user = new User()
-    Object.keys(data).forEach(key => {
-      user[key] = data[key]
-    })
+    Object.assign(user, data)
     const queryRunner = this.dataSource.createQueryRunner()
     await queryRunner.connect()
     await queryRunner.startTransaction()
@@ -123,7 +119,7 @@ export class UserService {
       throw new HttpException(
         {
           message: '新增用户失败，请检查参数或联系管理员',
-          error: err.toString()
+          error: err?.toString()
         },
         500
       )
@@ -143,10 +139,10 @@ export class UserService {
         ...arg,
         updateTime: new Date()
       })
-      const { roles: r } = await this.repo.findOne({
+      const { roles: r } = (await this.repo.findOne({
         where: { id: Equal(id) },
         relations: ['roles']
-      })
+      })) as unknown as User
       if (r?.length) {
         await queryRunner.manager.createQueryBuilder(User, 'u').relation('roles').of(id).remove(r)
       }
@@ -202,14 +198,20 @@ export class UserService {
   }
 
   getRouterChoose(path: string) {
-    const val = []
+    const val: {
+      title: string
+      selectable: boolean
+      expanded: boolean
+      key: string
+      children: { title: string; key: string; icon: string; isLeaf: boolean }[]
+    }[] = []
     this.acl.getRouters().forEach(r => {
       const ob = {
         title: r.name,
         selectable: false,
         expanded: false,
         key: r.name,
-        children: []
+        children: [] as { title: string; key: string; icon: string; isLeaf: boolean }[]
       }
       r.data.forEach(d => {
         const md = this.acl.requestMethod[d.method].toUpperCase()
