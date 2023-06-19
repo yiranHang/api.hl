@@ -29,11 +29,13 @@ export class SystemService {
     return [
       {
         isLeaf: true,
-        text: '菜单管理',
-        link: this.getLink('menu'),
-        path: '/menu',
+        title: '菜单管理',
+        name: 'menuManage',
+        path: this.getLink('menuManage'),
+        url: '/menu',
+        icon: 'Menu',
+        component: '/system/menuManage/index',
         sort: 3,
-        remark: '菜单管理',
         permission: [
           ...this.getBasePermission(),
           {
@@ -64,11 +66,13 @@ export class SystemService {
       },
       {
         isLeaf: true,
-        text: '用户管理',
-        link: this.getLink('user'),
-        path: '/user',
+        title: '用户管理',
+        path: this.getLink('userManage'),
+        url: '/user',
+        name: 'userManage',
+        icon: 'Menu',
+        component: '/system/userManage/index',
         sort: 1,
-        remark: '用户管理',
         permission: [
           ...this.getBasePermission(),
           {
@@ -93,21 +97,24 @@ export class SystemService {
       },
       {
         isLeaf: true,
-        text: '角色管理',
-        link: this.getLink('role'),
-        path: '/role',
+        title: '角色管理',
+        path: this.getLink('roleManage'),
+        url: '/role',
+        name: 'roleManage',
+        icon: 'Menu',
+        component: '/system/roleManage/index',
         sort: 2,
-        remark: '角色管理',
         permission: this.getBasePermission()
       },
-
       {
         isLeaf: true,
-        text: '字典管理',
-        link: this.getLink('dict'),
-        path: '/dict',
+        title: '字典管理',
+        path: this.getLink('dictManage'),
+        url: '/dict',
+        name: 'dictManage',
+        icon: 'Menu',
+        component: '/system/dictManage/index',
         sort: 5,
-        remark: '字典管理',
         permission: [
           ...this.getBasePermission(),
           {
@@ -145,7 +152,7 @@ export class SystemService {
   async setPermission(
     manager: EntityManager,
     me: Menu,
-    mu: Partial<Menu> & { path: string },
+    mu: Partial<Menu> & { url: string },
     role: Role
   ) {
     const permissions: Permission[] = []
@@ -154,7 +161,7 @@ export class SystemService {
       permission.name = key.name
       permission.code = key.code
       permission.menu = me
-      permission.path = this.getCompletePath(key.path || `${mu.path}/:id`)
+      permission.path = this.getCompletePath(key.path || `${mu.url}/:id`)
       permission.method = key.method
       permissions.push(permission)
     }
@@ -169,26 +176,22 @@ export class SystemService {
     const menus = this.getSystemEntity()
     for (const mu of menus) {
       const men = new Menu()
-      men.isLeaf = mu.isLeaf
-      men.showExpand = !mu.isLeaf
-      men.text = mu.text
-      men.sort = mu.sort
-      men.link = mu.link
-      men.remark = mu.remark
+      Object.assign(men, mu)
       men.parent = me
       const m = await manager.save(Menu, men)
-      await this.setPermission(manager, m, mu as Partial<Menu> & { path: string }, role)
+      await this.setPermission(manager, m, mu as Partial<Menu> & { url: string }, role)
     }
   }
 
   async setParentMenu(manager: EntityManager) {
     const menu = new Menu()
     menu.isLeaf = false
-    menu.showExpand = true
-    menu.icon = 'anticon-setting'
-    menu.text = '系统管理'
+    menu.icon = 'Tools'
+    menu.title = '系统管理'
+    menu.name = 'system'
+    menu.path = '/system'
+    menu.redirect = '/system/user'
     menu.sort = 1
-    menu.remark = '系统管理'
     return manager.save(Menu, menu)
   }
 

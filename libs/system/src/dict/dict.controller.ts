@@ -14,17 +14,17 @@ export class DictController {
   }
 
   @Get(':id')
-  getOne(@Param() { id }) {
+  getOne(@Param('id') id: string) {
     return this.service.getOne(id)
   }
 
   @Delete(':id')
-  deleteOne(@Param() { id }) {
+  deleteOne(@Param('id') id: string) {
     return this.service.deleteData(id)
   }
 
   @Patch(':id')
-  updateOne(@Param() { id }, @Body() body: Dict) {
+  updateOne(@Param('id') id: string, @Body() body: Dict) {
     return this.service.updateOne(id, body)
   }
 
@@ -34,12 +34,12 @@ export class DictController {
   }
 
   @Post('delete')
-  deleteMany(@Body() { ids }) {
+  deleteMany(@Body('ids') ids: string | string[]) {
     return this.service.deleteData(ids)
   }
 
   @Get('/check/:key')
-  checkKeyExists(@Param() { key }, @Query() { id }) {
+  checkKeyExists(@Param('key') key: string, @Query('id') id: string) {
     return this.service.checkKeyExists(key, id)
   }
 
@@ -54,27 +54,27 @@ export class DictController {
   }
 
   @Get('/detail/one/:id')
-  getDetailOne(@Param() { id }) {
+  getDetailOne(@Param('id') id: string) {
     return this.service.getDetailOne(id)
   }
 
   @Delete('/detail/one/:id')
-  deleteDetailOne(@Param() { id }) {
+  deleteDetailOne(@Param('id') id: string) {
     return this.service.deleteDetailData(id)
   }
 
   @Post('/detail/one/delete')
-  deleteDetailMany(@Body() { ids }) {
+  deleteDetailMany(@Body('ids') ids: string | string[]) {
     return this.service.deleteDetailData(ids)
   }
 
   @Patch('/detail/one/:id')
-  updateDetailOne(@Param() { id }, @Body() body: DictDetail) {
+  updateDetailOne(@Param('id') id: string, @Body() body: DictDetail) {
     return this.service.updateDetailOne(id, body)
   }
 
   @Get('/enum/:key')
-  getEnumByKey(@Param() { key }) {
+  getEnumByKey(@Param('key') key: string) {
     return this.service.getEnumByKey(key)
   }
 }

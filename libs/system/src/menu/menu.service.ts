@@ -34,20 +34,19 @@ export class MenuService {
       relations: ['permission']
     })
     const ergodicTree = (data: Menu[]) => {
-      const menus = []
+      const menus: any[] = []
       const setMenu = (d: Menu) => {
-        if (d.children.length) {
+        if (d.children?.length) {
           menus.push({
             key: d.id,
-            title: d.text,
-            isDisabled: d.forbidden,
+            title: d.title,
             isLeaf: false,
             children: d.children
           })
         }
       }
       const setPermission = (menu: Menu) => {
-        menu.children = menu.permission.map(k => {
+        menu.children = menu.permission?.map(k => {
           return {
             key: k?.['id'],
             title: k.name,
@@ -60,7 +59,7 @@ export class MenuService {
       data.forEach(d => {
         if (d.isLeaf) {
           setPermission(d)
-        } else if (d.children.length) {
+        } else if (d.children?.length) {
           d.children = ergodicTree(d.children)
           setMenu(d)
         }
@@ -136,10 +135,7 @@ export class MenuService {
         relations: ['children']
       })
       .then(r => {
-        if (Array.isArray(r?.children) && r.children.length) {
-          r['hideLeaf'] = true
-        }
-        if (!r?.permission) {
+        if (r && !r?.permission) {
           r['permission'] = []
         }
         return r
@@ -147,14 +143,14 @@ export class MenuService {
   }
 
   validCreateMenu(body: Menu) {
-    if (!body?.text) {
+    if (!body?.title) {
       throw new HttpException('菜单名称不能为空', 500)
     }
     if (!body?.sort) {
       throw new HttpException('菜单序号不能为空', 500)
     }
     if (body?.isLeaf) {
-      if (!body?.link) {
+      if (!body?.path) {
         throw new HttpException('叶子菜单，地址不能为空', 500)
       }
     }
@@ -187,17 +183,7 @@ export class MenuService {
     try {
       const { parent, ...data } = body
       const menu = new Menu()
-      menu.text = data.text
-      menu.sort = data.sort
-      if (data.isLeaf) {
-        menu.link = data.link
-      }
-      menu.isLeaf = data.isLeaf
-      menu.showExpand = !data.isLeaf
-      menu.icon = data.icon || null
-      menu.forbidden = data.forbidden
-      menu.hideInBreadcrumb = data.hideInBreadcrumb
-      menu.remark = data.remark
+      Object.assign(menu, data)
       if (parent) {
         const par = new Menu()
         par.id = parent as unknown as string
@@ -221,34 +207,35 @@ export class MenuService {
     if (body && Object.keys(body).length) {
       delete body.children
       delete body.permission
-      delete body['hideLeaf']
       return this.repository.update(id, {
         ...body,
         updateTime: new Date()
       })
     }
+    return null
   }
 
   async deleteData(id: string | string[]) {
     return this.repository.delete(id)
   }
 
-  async checkLinkExists(link: string, id: string) {
-    if (!link) {
+  async checkPathExists(path: string, id: string) {
+    if (!path) {
       return null
     }
     if (id) {
       const menu = await this.repository.findOneBy({ id })
-      if (menu?.link === link) {
+      if (menu?.path === path) {
         return null
       }
     }
-    return this.repository.findOneBy({ link })
+    return this.repository.findOneBy({ path })
   }
 
   getListSearch(name: string) {
     if (!name?.trim()) {
       return []
     }
+    return []
   }
 }

@@ -14,17 +14,17 @@ export class MenuController {
 
   @Get(':id')
   @ExcludePropertyAcl()
-  getOne(@Param() { id }) {
+  getOne(@Param('id') id: string) {
     return this.service.getOne(id)
   }
 
   @Delete(':id')
-  deleteOne(@Param() { id }) {
+  deleteOne(@Param('id') id: string) {
     return this.service.deleteData(id)
   }
 
   @Patch(':id')
-  updateOne(@Param() { id }, @Body() body: Menu) {
+  updateOne(@Param('id') id: string, @Body() body: Menu) {
     return this.service.updateOne(id, body)
   }
 
@@ -38,23 +38,23 @@ export class MenuController {
     return this.service.getPermissionTree()
   }
 
-  @Get('/check/:link')
-  checkLinkExists(@Param() { link }, @Query() { id }) {
-    return this.service.checkLinkExists(decodeURIComponent(link), id)
+  @Get('/check/:path')
+  checkPathExists(@Param('path') path: string, @Query('id') id: string) {
+    return this.service.checkPathExists(decodeURIComponent(path), id)
   }
 
   @Get('/tree/:user')
-  getTreeMenuByUser(@Param() { user }) {
+  getTreeMenuByUser(@Param('user') user: string) {
     return this.service.getRoleMenuAclByUser(user)
   }
 
   @Post('delete')
-  deleteMany(@Body() { ids }) {
+  deleteMany(@Body('ids') ids: string | string[]) {
     return this.service.deleteData(ids)
   }
 
   @Get('/list/search')
-  getListSearch(@Query() { name }) {
+  getListSearch(@Query('name') name: string) {
     return this.service.getListSearch(decodeURIComponent(name))
   }
 }

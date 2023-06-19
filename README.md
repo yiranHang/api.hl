@@ -7,3 +7,9 @@
 ## Start the app
 
 To start the development server run `nx serve api`. Open your browser and navigate to http://localhost:4200/. Happy coding!
+
+## CLI
+
+```shell
+nx generate @nx/nest:interceptor responseInterceptor --directory=interceptor
+```

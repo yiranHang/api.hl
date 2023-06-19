@@ -10,45 +10,21 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@admin-api/auth": [
-        "libs/auth/src/index.ts"
-      ],
-      "@admin-api/common": [
-        "libs/common/src/index.ts"
-      ],
-      "@admin-api/core": [
-        "libs/core/src/index.ts"
-      ],
-      "@admin-api/database": [
-        "libs/database/src/index.ts"
-      ],
-      "@admin-api/dm": [
-        "libs/dm/src/index.ts"
-      ],
-      "@admin-api/documents": [
-        "libs/documents/src/index.ts"
-      ],
-      "@admin-api/logger": [
-        "libs/logger/src/index.ts"
-      ],
-      "@admin-api/oa": [
-        "libs/oa/src/index.ts"
-      ],
-      "@admin-api/system": [
-        "libs/system/src/index.ts"
-      ]
+      "@admin-api/auth": ["libs/auth/src/index.ts"],
+      "@admin-api/common": ["libs/common/src/index.ts"],
+      "@admin-api/core": ["libs/core/src/index.ts"],
+      "@admin-api/database": ["libs/database/src/index.ts"],
+      "@admin-api/dm": ["libs/dm/src/index.ts"],
+      "@admin-api/documents": ["libs/documents/src/index.ts"],
+      "@admin-api/logger": ["libs/logger/src/index.ts"],
+      "@admin-api/oa": ["libs/oa/src/index.ts"],
+      "@admin-api/system": ["libs/system/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

@@ -28,37 +28,35 @@ export class MenuRepository extends TreeRepository<Menu> {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const permissions: any = {}
         const { permission, ...arg } = menu
-        permission.forEach(p => {
-          permissions[p.code as string] = `${menu.link}:${p.code}`
+        permission?.forEach(p => {
+          permissions[p.code as string] = `${menu.path}:${p.code}`
         })
-        if (validAcl.includes(`${menu.link}:get`) && permissions['get']) {
+        if (validAcl.includes(`${menu.path}:get`) && permissions['get']) {
           ishasChildren = true
           /**此处可根据配置决定跳转页 */
-          switchRouter = switchRouter ? switchRouter : menu.link
-          let link = menu.link
-          if (menu.remark === '1') {
-            link = menu.icon + menu.link
-          }
+          switchRouter = switchRouter ? switchRouter : menu.path
+          let link = menu.path
+
           searchKey.push({
-            rootText: root?.text || '',
+            rootText: root?.title || '',
             rootId: root?.id || '',
-            text: menu.text,
+            text: menu.title,
             link: link,
             id: menu.id
           })
         }
         menus.push({
           ...arg,
-          acl: { ability: [getAcl(menu.link)] },
+          acl: { ability: [getAcl(menu.path)] },
           key: arg.id
         })
       }
       data.forEach(d => {
-        const { isLeaf, link, children, id } = d
-        const isOk = isLeaf && link
+        const { isLeaf, path, children, id } = d
+        const isOk = isLeaf && path
         if (isOk) {
           setAcls(d)
-        } else if (children.length) {
+        } else if (children?.length) {
           const { menus: m, ishasChildren: is, searchKey: sk } = ergodicTree(children, d)
           d.children = m
           ishasChildren = ishasChildren ? true : is
