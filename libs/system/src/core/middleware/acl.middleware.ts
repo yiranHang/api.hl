@@ -20,7 +20,7 @@ export class AclMiddleware {
 
   isOk(acl: Permission[] | void, path: RegExp) {
     if (acl && acl.length) {
-      return acl.some(r => path.test(r.path))
+      return acl.some(r => path.test(r.path as string))
     }
     return false
   }
@@ -30,7 +30,7 @@ export class AclMiddleware {
     const path = parse(originalUrl).pathname
     const index = this.requestMethod.findIndex(f => f === method.toUpperCase())
     const meta = this.metaData[index].find(
-      (r: { isExcule: boolean; path: RegExp }) => !r.isExcule && r.path.test(path)
+      (r: { isExcule: boolean; path: RegExp }) => !r.isExcule && r.path.test(path as string)
     )
     return meta ? { ...meta, method } : null
   }

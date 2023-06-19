@@ -15,22 +15,22 @@ export class RoleController {
 
   @ExcludePropertyAcl()
   @Get(':id')
-  getOne(@Param() { id }) {
+  getOne(@Param('id') id: string) {
     return this.service.getOne(id)
   }
 
   @Get('/check/:code')
-  checkRoleExists(@Param() { code }, @Query() { id }) {
+  checkRoleExists(@Param('code') code: string, @Query('id') id: string) {
     return this.service.checkRoleExists(code, id)
   }
 
   @Delete(':id')
-  deleteOne(@Param() { id }) {
+  deleteOne(@Param('id') id: string) {
     return this.service.deleteData(id)
   }
 
   @Patch(':id')
-  updateOne(@Param() { id }, @Body() body: Role) {
+  updateOne(@Param('id') id: string, @Body() body: Role) {
     return this.service.updateOne(id, body)
   }
 
@@ -45,7 +45,7 @@ export class RoleController {
   }
 
   @Post('delete')
-  deleteMany(@Body() { ids }) {
+  deleteMany(@Body('ids') ids: string | string[]) {
     return this.service.deleteData(ids)
   }
 

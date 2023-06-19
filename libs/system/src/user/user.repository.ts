@@ -19,7 +19,7 @@ export class UserRepository extends Repository<User> {
         r.code && role.push(r.code)
         r?.permissions.forEach(p => {
           if (p?.menu?.id) {
-            ability.push(`${p.menu.path}:${p.code}`)
+            ability.push(`${p.menu.link}:${p.code}`)
           }
           if (p?.path && p.method && !p.forbidden) {
             api.push(p)

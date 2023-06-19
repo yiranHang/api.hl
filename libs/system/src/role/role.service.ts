@@ -80,7 +80,7 @@ export class RoleService {
           where: { id },
           relations: ['permissions']
         })
-        if (result.permissions.length) {
+        if (result?.permissions.length) {
           await queryRunner.manager
             .createQueryBuilder(Role, 'r')
             .relation('permissions')

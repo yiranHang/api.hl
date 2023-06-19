@@ -48,7 +48,7 @@ export class MenuService {
       const setPermission = (menu: Menu) => {
         menu.children = menu.permission?.map(k => {
           return {
-            key: k?.['id'],
+            key: k.id,
             title: k.name,
             isDisabled: false,
             isLeaf: true
@@ -150,7 +150,7 @@ export class MenuService {
       throw new HttpException('菜单序号不能为空', 500)
     }
     if (body?.isLeaf) {
-      if (!body?.path) {
+      if (!body?.link) {
         throw new HttpException('叶子菜单，地址不能为空', 500)
       }
     }
@@ -219,17 +219,17 @@ export class MenuService {
     return this.repository.delete(id)
   }
 
-  async checkPathExists(path: string, id: string) {
-    if (!path) {
+  async checkPathExists(link: string, id: string) {
+    if (!link) {
       return null
     }
     if (id) {
       const menu = await this.repository.findOneBy({ id })
-      if (menu?.path === path) {
+      if (menu?.link === link) {
         return null
       }
     }
-    return this.repository.findOneBy({ path })
+    return this.repository.findOneBy({ link })
   }
 
   getListSearch(name: string) {

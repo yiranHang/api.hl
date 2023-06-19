@@ -38,9 +38,9 @@ export class MenuController {
     return this.service.getPermissionTree()
   }
 
-  @Get('/check/:path')
-  checkPathExists(@Param('path') path: string, @Query('id') id: string) {
-    return this.service.checkPathExists(decodeURIComponent(path), id)
+  @Get('/check/:link')
+  checkPathExists(@Param('link') link: string, @Query('id') id: string) {
+    return this.service.checkPathExists(decodeURIComponent(link), id)
   }
 
   @Get('/tree/:user')

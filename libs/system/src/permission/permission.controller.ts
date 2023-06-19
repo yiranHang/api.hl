@@ -13,27 +13,30 @@ export class PermissionController {
   }
 
   @Post('/update')
-  updateMany(@Body('acl') acl: Permission[], @Body() { user, department }) {
+  updateMany(
+    @Body('acl') acl: Permission[],
+    @Body() { user, department }: { user: string; department: string }
+  ) {
     return this.service.updateManyPermission(acl, user, department)
   }
 
   @Delete('/:id')
-  deleteOne(@Param() { id }) {
+  deleteOne(@Param('id') id: string) {
     return this.service.deletePermission(id)
   }
 
   @Patch('/:id')
-  updateOne(@Param() { id }, @Body() body: Permission) {
+  updateOne(@Param('id') id: string, @Body() body: Permission) {
     return this.service.updatePermission(id, body)
   }
 
   @Post('/delete')
-  deleteMany(@Body() { ids }) {
+  deleteMany(@Body('ids') ids: string | string[]) {
     return this.service.deletePermission(ids)
   }
 
   @Get('/:id')
-  getPermission(@Param() { id }) {
+  getPermission(@Param('id') id: string) {
     return this.service.getPermission(id)
   }
 
@@ -43,7 +46,10 @@ export class PermissionController {
   }
 
   @Get('/check/:code')
-  checkCodeExists(@Param() { code }, @Query() { id, menu }) {
+  checkCodeExists(
+    @Param('code') code: string,
+    @Query() { id, menu }: { id: string; menu: string }
+  ) {
     return this.service.checkCodeExists(code, id, menu)
   }
 }

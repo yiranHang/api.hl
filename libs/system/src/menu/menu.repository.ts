@@ -29,13 +29,13 @@ export class MenuRepository extends TreeRepository<Menu> {
         const permissions: any = {}
         const { permission, ...arg } = menu
         permission?.forEach(p => {
-          permissions[p.code as string] = `${menu.path}:${p.code}`
+          permissions[p.code as string] = `${menu.link}:${p.code}`
         })
-        if (validAcl.includes(`${menu.path}:get`) && permissions['get']) {
+        if (validAcl.includes(`${menu.link}:get`) && permissions['get']) {
           ishasChildren = true
           /**此处可根据配置决定跳转页 */
-          switchRouter = switchRouter ? switchRouter : menu.path
-          let link = menu.path
+          switchRouter = switchRouter ? switchRouter : menu.link
+          let link = menu.link
 
           searchKey.push({
             rootText: root?.title || '',
@@ -47,13 +47,13 @@ export class MenuRepository extends TreeRepository<Menu> {
         }
         menus.push({
           ...arg,
-          acl: { ability: [getAcl(menu.path)] },
+          acl: { ability: [getAcl(menu.link)] },
           key: arg.id
         })
       }
       data.forEach(d => {
-        const { isLeaf, path, children, id } = d
-        const isOk = isLeaf && path
+        const { isLeaf, link, children, id } = d
+        const isOk = isLeaf && link
         if (isOk) {
           setAcls(d)
         } else if (children?.length) {
