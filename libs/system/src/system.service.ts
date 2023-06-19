@@ -196,7 +196,7 @@ export class SystemService {
     menu.title = '系统管理'
     menu.name = 'system'
     menu.path = '/system'
-    menu.redirect = '/system/user'
+    menu.redirect = '/system/userManage'
     menu.sort = 1
     return manager.save(Menu, menu)
   }
