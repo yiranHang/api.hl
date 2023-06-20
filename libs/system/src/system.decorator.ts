@@ -7,7 +7,6 @@ import { EXCLUDE_ACL_CONTROLLER, EXCLUDE_ACL_PROPERTY } from './system.constant'
  * 用于排除指定Controller
  *
  * @Date 2022/05/30
- * @admin-api/author liangdai
  * @returns {ClassDecorator}
  */
 export function ExcludeControllerAcl(): ClassDecorator {
@@ -19,7 +18,6 @@ export function ExcludeControllerAcl(): ClassDecorator {
  * 用于排除指定method
  *
  * @Date 2022/05/30
- * @admin-api/author liangdai
  * @returns {MethodDecorator}
  */
 export function ExcludePropertyAcl(): MethodDecorator {

@@ -146,8 +146,8 @@ export class UserService {
       if (roles.length) {
         await queryRunner.manager.createQueryBuilder(User, 'u').relation('roles').of(id).add(roles)
       }
-
-      return await queryRunner.commitTransaction()
+      await queryRunner.commitTransaction()
+      return this.getOne(id)
     } catch (err: unknown) {
       await queryRunner.rollbackTransaction()
     } finally {
@@ -175,7 +175,11 @@ export class UserService {
       })
   }
 
-  updatePassword(id: string, password: string) {
+  async updatePassword(id: string, password?: string) {
+    if (!password) {
+      const user = await this.repo.findOneBy({ id })
+      password = `${user?.account?.substring(user?.account?.length - 15)}@123`
+    }
     return this.repo.update(id, {
       password: CryptoUtil.encryptPassWord(password)
     })
