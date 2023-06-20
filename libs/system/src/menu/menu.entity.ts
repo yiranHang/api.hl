@@ -13,7 +13,7 @@ export class Menu extends BaseEntity {
   path?: string
 
   /** 对应页面组件 name, 可用作 KeepAlive 缓存标识 && 按钮权限筛选 */
-  @Column({ type: 'varchar', comment: '路由 name ' })
+  @Column({ type: 'varchar', unique: true, comment: '路由 name ' })
   name!: string
 
   @Column({ type: 'varchar', nullable: true, comment: '路由重定向地址' })

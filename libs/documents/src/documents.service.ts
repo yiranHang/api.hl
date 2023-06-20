@@ -1,5 +1,5 @@
 import { HttpException, Inject, Injectable, Optional } from '@nestjs/common'
-import { createReadStream, createWriteStream, existsSync, unlinkSync } from 'fs'
+import { PathLike, createReadStream, createWriteStream, existsSync, unlinkSync } from 'fs'
 import { Response } from 'express'
 import { FileOption, FILE_OPTION, PagingData, QueryEntity, TFileOption } from './type'
 import { createFileEtag, getFileType } from './util'
@@ -74,7 +74,7 @@ export class DocumentsService {
       res.header('Content-Type', 'application/octet-stream')
       res.header('ETag', record.etag)
       res.header('Content-Length', `${record.size}`)
-      res.header('Content-Disposition', `attachment; filename=${encodeURI(record.name)}`)
+      res.header('Content-Disposition', `attachment; filename=${encodeURI(record.name as string)}`)
       return file.pipe(res)
     }
     throw new HttpException('该资源信息不存在！', 404)
@@ -94,7 +94,7 @@ export class DocumentsService {
     const record = await this.file.findOneBy({ id })
     if (record && record.path) {
       const file = createReadStream(join(process.cwd(), record.path))
-      res.header('Content-Type', getContentType(record.type))
+      res.header('Content-Type', getContentType(record.type as string))
       // res.header('Cache-Control', 'max-age=1000*60*60*24');
       return file.pipe(res)
     }
@@ -136,8 +136,8 @@ export class DocumentsService {
   async deleteData(id: string | string[]) {
     if (this.option?.noEtag && !Array.isArray(id)) {
       const { path } = (await this.file.findOneBy({ id })) || {}
-      if (existsSync(path)) {
-        unlinkSync(path)
+      if (existsSync(path as PathLike)) {
+        unlinkSync(path as PathLike)
       }
     }
     return this.file.delete(id)
