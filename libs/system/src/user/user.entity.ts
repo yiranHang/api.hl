@@ -16,17 +16,10 @@ export class User extends BaseEntity {
   name?: string
 
   @Column({
-    default: false,
-    type: 'boolean',
-    comment: '是否禁用'
-  })
-  forbidden?: boolean
-
-  @Column({
     type: 'int',
-    enum: [0, 1, 2],
-    default: 0,
-    comment: '账号状态(0:正常;1:冻结;2:异常)'
+    enum: [0, 1],
+    default: 1,
+    comment: '账号状态(1:正常;0:冻结)'
   })
   status?: number
 
@@ -62,10 +55,10 @@ export class User extends BaseEntity {
   @Column({
     default: false, //false不需要重新设置密码
     comment: '新建还是重置',
-    name: 'nCreated_or_reset',
+    name: 'is_created_or_reset',
     type: 'boolean'
   })
-  nCreatedReset?: boolean
+  isCreatedOrReset?: boolean
 
   @Column({
     type: 'timestamptz',

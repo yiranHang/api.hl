@@ -13,33 +13,33 @@ export class UserController {
   }
 
   @Get(':id')
-  getOne(@Param() { id }) {
+  getOne(@Param('id') id: string) {
     return this.service.getOne(id)
   }
 
   @Get('/check/:account')
-  checkUserExists(@Param() { account }, @Query() { id }) {
+  checkUserExists(@Param('account') account: string, @Query('id') id: string) {
     return this.service.checkUserExists(account, id)
   }
 
   @Delete(':id')
-  deleteOne(@Param() { id }) {
+  deleteOne(@Param('id') id: string) {
     return this.service.deleteData(id)
   }
 
   @Patch(':id')
-  updateOne(@Param() { id }, @Body() body: User) {
+  updateOne(@Param('id') id: string, @Body() body: User) {
     return this.service.updateOne(id, body)
   }
 
   @Patch('/password/:id')
-  updatePassword(@Param() { id }, @Body() { password }) {
+  updatePassword(@Param('id') id: string, @Body('password') password: string) {
     return this.service.updatePassword(id, password)
   }
 
   //清空token的数据
   @Patch(':id')
-  updateToken(@Param() { id }) {
+  updateToken(@Param('id') id: string) {
     return this.service.updatePassword(id, '')
   }
 
@@ -49,12 +49,12 @@ export class UserController {
   }
 
   @Post('delete')
-  deleteMany(@Body() { ids }) {
+  deleteMany(@Body('ids') ids: string | string[]) {
     return this.service.deleteData(ids)
   }
 
   @Get('/router/choose')
-  getRouterChoose(@Query() { path }) {
+  getRouterChoose(@Query('path') path: string) {
     return this.service.getRouterChoose(path)
   }
 }

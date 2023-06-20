@@ -23,11 +23,8 @@ export class UserService {
     if (!user) {
       throw new HttpException('账号不存在，请重新输入', 500)
     } else {
-      if (user.forbidden) {
-        throw new HttpException('该账号以被禁用，请联系管理员', 401)
-      }
-      if (user.status !== 0) {
-        throw new HttpException('该账号状态异常，请联系管理员', 401)
+      if (user.status === 0) {
+        throw new HttpException('该账号已被冻结，请联系管理员', 401)
       }
 
       if (password && user.password !== this.repo.cryptoPassword(password)) {
