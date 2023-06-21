@@ -81,7 +81,7 @@ export class UserService {
     }
   }
 
-  async validCreateUser(body: User, id?: string) {
+  async validCreateUser(body: User) {
     if (!body?.account) {
       throw new HttpException('账号不能为空', 500)
     }
@@ -89,10 +89,13 @@ export class UserService {
     if (!body?.name) {
       throw new HttpException('用户名不能为空', 500)
     }
-    const users = await this.repo.createQueryBuilder('user').withDeleted().getMany()
-    const accounts = users.map(({ id, account }) => ({ id, account }))
-    const findAccount = accounts.find(({ account }) => account === body.account)
-    if (findAccount && findAccount.id !== id) {
+    const users = await this.repo
+      .createQueryBuilder('user')
+      .select('account')
+      .withDeleted()
+      .getMany()
+    const findAccount = users.find(({ account }) => account === body.account)
+    if (findAccount) {
       throw new HttpException('账号已存在', 500)
     }
   }
@@ -132,7 +135,6 @@ export class UserService {
   }
 
   async updateOne(id: string, body: User) {
-    await this.validCreateUser(body, id)
     const queryRunner = this.dataSource.createQueryRunner()
     await queryRunner.connect()
     await queryRunner.startTransaction()

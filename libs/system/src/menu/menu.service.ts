@@ -142,7 +142,7 @@ export class MenuService {
       })
   }
 
-  async validCreateMenu(body: Menu, id?: string) {
+  async validCreateMenu(body: Menu) {
     if (!body?.title) {
       throw new HttpException('菜单名称不能为空', 500)
     }
@@ -155,14 +155,14 @@ export class MenuService {
       }
     }
     const menus = (await this.repo.createQueryBuilder('role').withDeleted().getMany())?.map(
-      ({ id, name, path }) => ({ id, name, path })
+      ({ name, path }) => ({ name, path })
     )
     const findPath = menus.find(({ path }) => path === body.path)
     const findName = menus.find(({ name }) => name === body.name)
-    if (findPath && findPath.id !== id) {
+    if (findPath) {
       throw new HttpException('路由访问路径已存在', 500)
     }
-    if (findName && findName.id !== id) {
+    if (findName) {
       throw new HttpException('路由 name 已存在', 500)
     }
   }
@@ -215,7 +215,6 @@ export class MenuService {
   }
 
   async updateOne(id: string, body: Menu) {
-    await this.validCreateMenu(body, id)
     if (body && Object.keys(body).length) {
       delete body.children
       delete body.permission
