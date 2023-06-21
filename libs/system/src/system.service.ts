@@ -71,7 +71,7 @@ export class SystemService {
         url: '/user',
         name: 'userManage',
         icon: 'Menu',
-        component: '/system/accountManage/index',
+        component: '/system/userManage/index',
         sort: 1,
         permission: [
           ...this.getBasePermission(),

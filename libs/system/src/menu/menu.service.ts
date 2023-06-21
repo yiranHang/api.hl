@@ -11,7 +11,7 @@ import { DataBaseSource } from '@admin-api/database'
 @Injectable()
 export class MenuService {
   constructor(
-    readonly repository: MenuRepository,
+    readonly repo: MenuRepository,
     private config: ConfigService,
     private userRepository: UserRepository,
     private dataSource: DataBaseSource
@@ -30,7 +30,7 @@ export class MenuService {
   }
 
   async getPermissionTree() {
-    const data = await this.repository.findTrees({
+    const data = await this.repo.findTrees({
       relations: ['permission']
     })
     const ergodicTree = (data: Menu[]) => {
@@ -86,7 +86,7 @@ export class MenuService {
     const roles = [...new Set([...r])]
     const abilities = [...new Set([...a])]
     /**获取所有菜单权限点,和有效菜单 */
-    const { menus, ishasChildren, switchRouter, searchKey } = await this.repository.getAclsAndMenu(
+    const { menus, ishasChildren, switchRouter, searchKey } = await this.repo.getAclsAndMenu(
       abilities
     )
     return {
@@ -105,7 +105,7 @@ export class MenuService {
       throw new HttpException('获取权限点必须含有id', 401)
     }
     const { roles } = await this.getRoleMenuAclByUser(id)
-    const menus = await this.repository.getAclsAndMenu(roles)
+    const menus = await this.repo.getAclsAndMenu(roles)
     return menus
   }
 
@@ -119,7 +119,7 @@ export class MenuService {
     findCondition.where = {
       parent: sign ? Equal(sign) : IsNull()
     }
-    const [data, count] = await this.repository.findAndCount(findCondition)
+    const [data, count] = await this.repo.findAndCount(findCondition)
     return {
       data,
       count,
@@ -129,7 +129,7 @@ export class MenuService {
   }
 
   async getOne(id: string) {
-    return this.repository
+    return this.repo
       .findOne({
         where: { id },
         relations: ['children']
@@ -142,7 +142,7 @@ export class MenuService {
       })
   }
 
-  validCreateMenu(body: Menu) {
+  async validCreateMenu(body: Menu) {
     if (!body?.title) {
       throw new HttpException('菜单名称不能为空', 500)
     }
@@ -153,6 +153,15 @@ export class MenuService {
       if (!body?.path) {
         throw new HttpException('叶子菜单，地址不能为空', 500)
       }
+    }
+    const menus = await this.repo.createQueryBuilder('role').withDeleted().getMany()
+    const paths = menus.map(({ path }) => path)
+    const names = menus.map(({ name }) => name)
+    if (paths.includes(body.path)) {
+      throw new HttpException('路由访问路径已存在', 500)
+    }
+    if (names.includes(body.name)) {
+      throw new HttpException('路由 name 已存在', 500)
     }
   }
 
@@ -176,7 +185,7 @@ export class MenuService {
   }
 
   async createOne(body: Menu) {
-    this.validCreateMenu(body)
+    await this.validCreateMenu(body)
     const queryRunner = this.dataSource.createQueryRunner()
     await queryRunner.connect()
     await queryRunner.startTransaction()
@@ -204,10 +213,11 @@ export class MenuService {
   }
 
   async updateOne(id: string, body: Menu) {
+    await this.validCreateMenu(body)
     if (body && Object.keys(body).length) {
       delete body.children
       delete body.permission
-      return this.repository.update(id, {
+      return this.repo.update(id, {
         ...body,
         updateTime: new Date()
       })
@@ -216,7 +226,7 @@ export class MenuService {
   }
 
   async deleteData(id: string | string[]) {
-    return this.repository.delete(id)
+    return this.repo.delete(id)
   }
 
   async checkPathExists(path: string, id: string) {
@@ -224,12 +234,12 @@ export class MenuService {
       return null
     }
     if (id) {
-      const menu = await this.repository.findOneBy({ id })
+      const menu = await this.repo.findOneBy({ id })
       if (menu?.path === path) {
         return null
       }
     }
-    return this.repository.findOneBy({ path })
+    return this.repo.findOneBy({ path })
   }
 
   getListSearch(name: string) {

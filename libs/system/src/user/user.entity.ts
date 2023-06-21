@@ -53,7 +53,7 @@ export class User extends BaseEntity {
   token?: string
 
   @Column({
-    default: false, //false不需要重新设置密码
+    default: true, //false不需要重新设置密码
     comment: '新建还是重置',
     name: 'is_created_or_reset',
     type: 'boolean'

@@ -47,7 +47,7 @@ export class Menu extends BaseEntity {
   @Column({ type: 'boolean', comment: '菜单是否固定在标签页中 (首页通常是固定项)', default: false })
   isAffix!: boolean
 
-  @Column({ type: 'boolean', comment: '当前路由是否缓存', default: true })
+  @Column({ type: 'boolean', comment: '当前路由是否缓存', default: false })
   isKeepAlive!: boolean
 
   @Column({ type: 'int', comment: '序号' })
