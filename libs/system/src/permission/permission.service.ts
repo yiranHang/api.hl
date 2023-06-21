@@ -41,8 +41,9 @@ export class PermissionService {
         try {
           const condition = user ? { user: Equal(user) } : { department: Equal(department) }
           await queryRunner.manager.delete(Permission, condition)
-          await queryRunner.manager.save(Permission, acl)
-          return await queryRunner.commitTransaction()
+          const result = await queryRunner.manager.save(Permission, acl)
+          await queryRunner.commitTransaction()
+          return result
         } catch (err: unknown) {
           await queryRunner.rollbackTransaction()
         } finally {

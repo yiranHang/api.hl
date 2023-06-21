@@ -36,7 +36,6 @@ export class AclService implements OnModuleInit {
    * 根据路径拼接一个
    * 完整的接口路径
    *
-   * @admin-api/author liangdai
    * @Date 2022/05/30
    * @param {string} controller 对应controller 的路径
    * @param {string | string[]} path 对应方法的路径
@@ -58,7 +57,6 @@ export class AclService implements OnModuleInit {
    * 生成一个完整的controller
    * 下的所有接口
    *
-   * @admin-api/author liangdai
    * @Date 2022/05/30
    * @param {Constructor} target 对应controller的类
    * @param {NoSafe} value 对应方法的Descriptor
@@ -84,7 +82,6 @@ export class AclService implements OnModuleInit {
    * 生成一个完整的controller
    * 下的所有接口
    *
-   * @admin-api/author liangdai
    * @Date 2022/05/30
    * @param {Constructor} target 对应controller的类
    * @returns {RouteInfo[]}
@@ -104,7 +101,6 @@ export class AclService implements OnModuleInit {
   /**
    * 生成所有接口信息
    *
-   * @admin-api/author liangdai
    * @Date 2022/05/30
    * @returns {void}
    */
@@ -177,7 +173,6 @@ export class AclService implements OnModuleInit {
    * 根据ACL 中间件设置白名单
    *
    * @see [setAclMiddleware] (https://docs.nestjs.com/middleware#middleware-consumer)
-   * @admin-api/author liangdai
    * @Date 2022/05/30
    * @param {MiddlewareConsumer} consumer
    * @return {void}
@@ -205,7 +200,6 @@ export class AclService implements OnModuleInit {
   /**
    * 获取路由
    *
-   * @admin-api/author liangdai
    * @Date 2022/05/30
    * @return {Routers[]}
    */

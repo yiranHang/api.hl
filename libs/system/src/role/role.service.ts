@@ -95,7 +95,8 @@ export class RoleService {
             .add(permissions)
         }
       }
-      return await queryRunner.commitTransaction()
+      await queryRunner.commitTransaction()
+      return this.getOne(id)
     } catch (err: unknown) {
       await queryRunner.rollbackTransaction()
     } finally {
