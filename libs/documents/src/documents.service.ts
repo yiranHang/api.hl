@@ -36,7 +36,6 @@ export class DocumentsService {
           // eslint-disable-next-line @typescript-eslint/no-var-requires
           require('mkdirp').sync(mkdir)
         }
-        s
         const type = getFileType(decodeURIComponent(escape(file.originalname)))
         const pathSrc = join(mkdir, `${new Date().getTime()}.${type}`)
         const writeImage = createWriteStream(pathSrc)
