@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, Injectable } from '@nestjs/common'
 import { FindManyOptions, Like } from 'typeorm'
 import { Pages, QueryEntity } from '../system.type'
 import { DictDetailRepository, DictRepository } from './dict.repository'
@@ -35,20 +35,38 @@ export class DictService {
     }
   }
 
+  async validCreateDict(body: Dict) {
+    if (!body?.name) {
+      throw new HttpException('字典名称不能为空', 500)
+    }
+
+    if (!body?.key) {
+      throw new HttpException('字典类型不能为空', 500)
+    }
+    const users = await this.repo.createQueryBuilder('dict').select('key').withDeleted().getMany()
+    const findKey = users.find(({ key }) => key === body.key)
+    if (findKey) {
+      throw new HttpException('字典类型已存在', 500)
+    }
+  }
+
   async createOne(data: Dict) {
-    return this.repo.save(data)
+    await this.validCreateDict(data)
+    const dict = new Dict()
+    Object.assign(dict, data)
+    return await this.repo.save(data)
   }
 
   async updateOne(id: string, body: Dict) {
-    return this.repo.update(id, body)
+    return await this.repo.update(id, body)
   }
 
   async deleteData(id: string | string[]) {
-    return this.repo.delete(id)
+    return await this.repo.delete(id)
   }
 
   async getOne(id: string) {
-    return this.repo.findOneBy({ id })
+    return await this.repo.findOneBy({ id })
   }
 
   async checkKeyExists(key: string, id: string) {
@@ -64,14 +82,14 @@ export class DictService {
     return this.repo.findOneBy({ key })
   }
 
-  createDetailOne(body: DictDetail) {
-    return this.detail.save(body)
+  async createDetailOne(body: DictDetail) {
+    return await this.detail.save(body)
   }
 
   async getDetailMany(query: QueryEntity<DictDetail>): Promise<Pages<DictDetail>> {
     const { pi, ps, label, disabled, dict } = query || {}
     const findCondition: FindManyOptions<DictDetail> = {
-      where: {}
+      where: { label }
     }
     const page = isNaN(Number(pi)) ? 1 : Number(pi)
     const limit = isNaN(Number(ps)) ? 0 : Number(ps)
@@ -97,16 +115,16 @@ export class DictService {
     }
   }
 
-  getDetailOne(id: string) {
-    return this.detail.findOneBy({ id })
+  async getDetailOne(id: string) {
+    return await this.detail.findOneBy({ id })
   }
 
-  deleteDetailData(id: string | string[]) {
-    return this.detail.delete(id)
+  async deleteDetailData(id: string | string[]) {
+    return await this.detail.delete(id)
   }
 
-  updateDetailOne(id: string, body: DictDetail) {
-    return this.detail.update(id, body)
+  async updateDetailOne(id: string, body: DictDetail) {
+    return await this.detail.update(id, body)
   }
 
   async getEnumByKey(key: string) {
