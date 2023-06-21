@@ -43,7 +43,7 @@ export class RoleService {
     return this.repo.findOneBy({ id })
   }
 
-  async validCreateRole(body: Role) {
+  async validCreateRole(body: Role, id?: string) {
     if (!body?.name) {
       throw new HttpException('角色名称不能为空', 500)
     }
@@ -52,8 +52,9 @@ export class RoleService {
       throw new HttpException('角色代码不能为空', 500)
     }
     const roles = await this.repo.createQueryBuilder('role').withDeleted().getMany()
-    const codes = roles.map(({ code }) => code)
-    if (codes.includes(body.code)) {
+    const codes = roles.map(({ id, code }) => ({ id, code }))
+    const findCode = codes.find(({ code }) => code === body.code)
+    if (findCode && findCode.id !== id) {
       throw new HttpException('角色代码已存在', 500)
     }
   }
@@ -69,7 +70,7 @@ export class RoleService {
   }
 
   async updateOne(id: string, body: Role) {
-    await this.validCreateRole(body)
+    await this.validCreateRole(body, id)
     const { permissions, ...arg } = body || {}
     if (Object.keys(arg).length) {
       return await this.repo.update(id, {
