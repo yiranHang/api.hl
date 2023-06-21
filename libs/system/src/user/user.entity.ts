@@ -43,6 +43,9 @@ export class User extends BaseEntity {
   @Column({ default: 0, type: 'int', comment: '密码输入错误计数' })
   count?: number
 
+  @Column({ type: 'varchar', comment: '头像', nullable: true })
+  avatar?: string
+
   @Column({ type: 'varchar', comment: '单位', nullable: true })
   unit?: string
 

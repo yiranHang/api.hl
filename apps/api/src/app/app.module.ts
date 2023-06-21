@@ -28,7 +28,7 @@ import { PassPortService } from './login/passport.service'
       inject: [ConfigProvider]
     }),
     DocumentsModule.forRoot({
-      noEtag: true
+      noEtag: false
     }),
     SystemModule.forRoot([], {
       softDelete: {
