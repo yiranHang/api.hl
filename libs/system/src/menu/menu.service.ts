@@ -128,6 +128,10 @@ export class MenuService {
     }
   }
 
+  async getManyList() {
+    return await this.repo.findTrees()
+  }
+
   async getOne(id: string) {
     return this.repo
       .findOne({
@@ -218,7 +222,7 @@ export class MenuService {
     if (body && Object.keys(body).length) {
       delete body.children
       delete body.permission
-      return this.repo.update(id, {
+      return await this.repo.update(id, {
         ...body,
         updateTime: new Date()
       })
@@ -227,7 +231,7 @@ export class MenuService {
   }
 
   async deleteData(id: string | string[]) {
-    return this.repo.delete(id)
+    return await this.repo.delete(id)
   }
 
   async checkPathExists(path: string, id: string) {
@@ -240,7 +244,7 @@ export class MenuService {
         return null
       }
     }
-    return this.repo.findOneBy({ path })
+    return await this.repo.findOneBy({ path })
   }
 
   getListSearch(name: string) {

@@ -54,7 +54,7 @@ export class UserController {
   }
 
   @Get('/router/choose')
-  getRouterChoose(@Query('path') path: string) {
-    return this.service.getRouterChoose(path)
+  getRouterChoose() {
+    return this.service.getRouterChoose()
   }
 }

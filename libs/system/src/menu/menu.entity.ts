@@ -53,6 +53,9 @@ export class Menu extends BaseEntity {
   @Column({ type: 'int', comment: '序号' })
   sort!: number
 
+  @Column({ type: 'varchar', comment: '备注', nullable: true })
+  remark!: string
+
   @Column({ type: 'boolean', comment: '是否叶子菜单', default: false })
   isLeaf!: boolean
 

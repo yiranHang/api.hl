@@ -207,29 +207,24 @@ export class UserService {
     return this.repo.findOneBy({ account })
   }
 
-  getRouterChoose(path: string) {
+  getRouterChoose() {
     const val: {
-      title: string
-      selectable: boolean
-      expanded: boolean
-      key: string
-      children: { title: string; key: string; icon: string; isLeaf: boolean }[]
+      label: string
+      value: string
+      children: { label: string; value: string; icon: string; isLeaf: boolean }[]
     }[] = []
     this.acl.getRouters().forEach(r => {
       const ob = {
-        title: r.name,
-        selectable: false,
-        expanded: false,
-        key: r.name,
-        children: [] as { title: string; key: string; icon: string; isLeaf: boolean }[]
+        label: r.name,
+        value: r.name,
+        children: [] as { label: string; value: string; icon: string; isLeaf: boolean }[]
       }
       r.data.forEach(d => {
         const md = this.acl.requestMethod[d.method].toUpperCase()
-        ob.expanded = ob.expanded ? true : path === `${md}||${d.path}`
         ob.children.push({
-          title: d.path,
-          key: `${md}||${d.path}`,
-          icon: 'api',
+          value: d.path,
+          label: `${md}||${d.path}`,
+          icon: 'Link',
           isLeaf: true
         })
       })

@@ -12,6 +12,11 @@ export class MenuController {
     return this.service.getMany(query)
   }
 
+  @Get('list')
+  getManyList() {
+    return this.service.getManyList()
+  }
+
   @Get(':id')
   @ExcludePropertyAcl()
   getOne(@Param('id') id: string) {
