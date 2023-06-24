@@ -30,10 +30,10 @@ export class UserService {
       if (password && user.password !== this.repo.cryptoPassword(password)) {
         throw new HttpException('密码不正确，请重新输入', 401)
       }
-      const { hasMenu } = await this.menu.getRoleMenuAclByUser(user.id as string)
-      if (!hasMenu) {
-        throw new HttpException('当前账号没权限访问', 401)
-      }
+      // const { menu } = await this.menu.getRoleMenuAclByUser(user.id as string)
+      // if (!menu.length) {
+      //   throw new HttpException('当前账号没权限访问', 401)
+      // }
     }
   }
   /**

@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common'
+import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common'
 import { EntityManager, Equal, FindManyOptions, IsNull } from 'typeorm'
 import { UserRepository } from '../user/user.repository'
 import { MenuRepository } from './menu.repository'
@@ -7,6 +7,8 @@ import { Pages, QueryEntity } from '../system.type'
 import { ConfigService } from '../core/service/config.service'
 import { Permission } from '../permission/permission.entity'
 import { DataBaseSource } from '@admin-api/database'
+import { flatten, groupBy } from 'underscore'
+import { User } from '../user/user.entity'
 
 @Injectable()
 export class MenuService {
@@ -67,36 +69,6 @@ export class MenuService {
       return menus
     }
     return ergodicTree(data)
-  }
-
-  /**
-   * 根据用户ID 获取该用户的 ROLE,acl,menus
-   *
-   * @param id 用户ID
-   * @returns
-   */
-  async getRoleMenuAclByUser(id: string) {
-    if (!id) {
-      throw new HttpException('获取权限点必须含有id', 401)
-    }
-
-    /**获取用户本身权限点、角色 */
-    const { role: r, ability: a } = await this.userRepository.getRoleAbilityApiById(id)
-
-    const roles = [...new Set([...r])]
-    const abilities = [...new Set([...a])]
-    /**获取所有菜单权限点,和有效菜单 */
-    const { menus, ishasChildren, switchRouter, searchKey } = await this.repo.getAclsAndMenu(
-      abilities
-    )
-    return {
-      roles,
-      abilities,
-      menus,
-      switchRouter,
-      searchKey,
-      hasMenu: roles.includes(this.config.defaultRole) ? true : ishasChildren
-    }
   }
 
   // 根据userID获取菜单
@@ -252,5 +224,102 @@ export class MenuService {
       return []
     }
     return []
+  }
+
+  /**
+   * 根据用户ID 获取该用户的 ROLE,acl,menus
+   * @param id 用户ID
+   * @returns
+   */
+  async getRoleMenuAclByUser(id: string) {
+    type TreeOption = {
+      roleCode: string
+      path: string
+      acl: string
+      code: string
+    }
+    type Acl<T> = {
+      [key: string]: T
+    }
+    const getAcl = (data: TreeOption[]) => {
+      const record = groupBy(data, 'roleCode')
+      const val: Acl<{ [key: string]: string }> = {}
+      Object.keys(record).map(k => {
+        const path = groupBy(record[k], 'path')
+        Object.keys(path).map(s => {
+          if (!Object.is(s, 'null')) {
+            val[s] = {}
+            path[s].map((z: TreeOption) => {
+              val[s][z.code] = z.acl
+            })
+          }
+        })
+      })
+      return { roles: Object.keys(record).filter(r => !Object.is(r, 'null')), acl: val }
+    }
+    const data = (
+      await this.dataSource
+        .getRepository(User)
+        .createQueryBuilder('u')
+        .select('role.code', 'roleCode')
+        .addSelect('role.forbidden', 'forbidden')
+        .addSelect('menu.path', 'path')
+        .addSelect('permissions.code', 'code')
+        .addSelect(`menu.path||':'||permissions.code`, 'acl')
+        .leftJoin('u.roles', 'role')
+        .leftJoin('role.permissions', 'permissions')
+        .leftJoin('permissions.menu', 'menu')
+        .where('u.id=:id', { id })
+        .getRawMany()
+    ).filter(r => !r.forbidden)
+    const acl = Object.keys(groupBy(data, 'acl'))
+    const menu = await this.getTreeMenus(acl)
+    // if (!menu || !menu.length) {
+    //   throw new UnauthorizedException('您当前账号没有权限访问该平台')
+    // }
+    const ra = getAcl(data)
+
+    return { menu, ...ra }
+  }
+
+  private async getTreeMenus(acl: string[]) {
+    const processTree = (v: Menu[]) => {
+      /**是叶子节点 */
+      const result = []
+      for (const item of v) {
+        const { isLeaf, permission, children } = item || {}
+        const { icon, title, isLink, isHide, isFull, isAffix, isKeepAlive, ...restItem } =
+          item || {}
+        const menu: any = {
+          meta: { icon, title, isLink, isHide, isFull, isAffix, isKeepAlive },
+          ...restItem
+        }
+        if (isLeaf && permission?.length) {
+          const isOk = permission.some(p => acl.includes(`${p?.menu?.path}:get`))
+          delete menu.permission
+          if (isOk) {
+            result.push(menu)
+            continue
+          }
+        }
+        if (!isLeaf && children?.length) {
+          const record = processTree(children)
+          if (record.length > 0) {
+            menu.children = record.sort((pre, nxt) => {
+              return pre.sort - nxt.sort
+            })
+            result.push({ ...menu })
+          }
+          continue
+        }
+      }
+      return result.sort((pre, nxt) => {
+        return pre.sort - nxt.sort
+      })
+    }
+    const data = await this.dataSource.getTreeRepository(Menu).findTrees({
+      relations: ['permission', 'permission.menu']
+    })
+    return processTree(data)
   }
 }

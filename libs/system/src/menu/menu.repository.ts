@@ -14,8 +14,8 @@ export class MenuRepository extends TreeRepository<Menu> {
       relations: ['permission']
     })
     let switchRouter = ''
-    const getAcl = (link: string) => {
-      return validAcl.includes(`${link}:get`) ? `${link}:get` : ''
+    const getAcl = (path: string) => {
+      return validAcl.includes(`${path}:get`.substring(1)) ? `${path}:get` : ''
     }
 
     const ergodicTree = (data: Menu[], root?: Menu) => {
@@ -42,7 +42,7 @@ export class MenuRepository extends TreeRepository<Menu> {
         permission?.forEach(p => {
           permissions[p.code as string] = `${menu.path}:${p.code}`
         })
-        if (validAcl.includes(`${menu.path}:get`) && permissions['get']) {
+        if (validAcl.includes(`${menu.path}:get`.substring(1)) && permissions['get']) {
           ishasChildren = true
           /**此处可根据配置决定跳转页 */
           switchRouter = switchRouter ? switchRouter : (menu.path as string)
