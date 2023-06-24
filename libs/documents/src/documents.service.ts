@@ -93,6 +93,9 @@ export class DocumentsService {
     }
     const record = await this.file.findOneBy({ id })
     if (record && record.path) {
+      if (!existsSync(record.path)) {
+        throw new HttpException('文件丢失', 404)
+      }
       const file = createReadStream(join(process.cwd(), record.path))
       res.header('Content-Type', getContentType(record.type as string))
       // res.header('Cache-Control', 'max-age=1000*60*60*24');
