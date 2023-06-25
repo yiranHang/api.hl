@@ -2,7 +2,7 @@ import { LoggerController } from './logger.controller'
 import { LoggerService } from './logger.service'
 import { LoggerAsyncOptions } from './logger.interface'
 import { LoggerModule } from './logger.module'
-import { DataBaseModule } from '@dl/database'
+import { DataBaseModule } from '@admin-api/database'
 import { LoggerRepository } from './logger.repositroy'
 
 export const getModule = (name?: string) => {

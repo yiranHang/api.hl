@@ -3,6 +3,7 @@ import { CONFIG, ContentOption, OAOption } from './type'
 import { SM4 } from 'gm-crypto'
 import { OaRepository } from './oa.repository'
 import { Oa } from './oa.entity'
+import { NoSafe } from '@admin-api/database'
 @Injectable()
 export class OaService {
   constructor(@Inject(CONFIG) private option: OAOption, private oa: OaRepository) {}
@@ -73,7 +74,7 @@ export class OaService {
       }
 
       return this.option.format ? this.option.format(data) : data
-    } catch (e) {
+    } catch (e: NoSafe) {
       msg = e?.message || '未知异常，请联系管理员'
       throw new HttpException(msg, HttpStatus.INTERNAL_SERVER_ERROR)
     } finally {

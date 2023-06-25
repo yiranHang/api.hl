@@ -6,7 +6,7 @@ import { Menu } from './menu.entity'
 import { Pages, QueryEntity } from '../system.type'
 import { ConfigService } from '../core/service/config.service'
 import { Permission } from '../permission/permission.entity'
-import { DataBaseSource } from '@admin-api/database'
+import { DataBaseSource, NoSafe } from '@admin-api/database'
 import { flatten, groupBy } from 'underscore'
 import { User } from '../user/user.entity'
 
@@ -36,7 +36,7 @@ export class MenuService {
       relations: ['permission']
     })
     const ergodicTree = (data: Menu[]) => {
-      const menus: any[] = []
+      const menus: NoSafe[] = []
       const setMenu = (d: Menu) => {
         if (d.children?.length) {
           menus.push({
@@ -290,7 +290,7 @@ export class MenuService {
         const { isLeaf, permission, children } = item || {}
         const { icon, title, isLink, isHide, isFull, isAffix, isKeepAlive, ...restItem } =
           item || {}
-        const menu: any = {
+        const menu: NoSafe = {
           meta: { icon, title, isLink, isHide, isFull, isAffix, isKeepAlive },
           ...restItem
         }

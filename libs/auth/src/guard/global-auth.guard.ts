@@ -31,7 +31,7 @@ export class GlobalAuthGuard implements CanActivate {
         }
       } catch (err: unknown) {
         const error = err as Record<string, number>
-        throw new HttpException((err as Error)?.message || '权限认证失败', error?.status || 403)
+        throw new HttpException((err as Error)?.message || '权限认证失败', error?.['status'] || 403)
       }
     }
     return !!isOk

@@ -111,7 +111,7 @@ export class AclService implements OnModuleInit {
     const setRouteMetadata = (r: RouteInfo & { isExcule: boolean }) => {
       const { requestMethod, pathRegex } = mapToExcludeRoute([r])[0]
       if (AclService.routeMetadata[requestMethod]) {
-        AclService.routeMetadata[requestMethod].push({
+        AclService!.routeMetadata[requestMethod].push({
           isExcule: r.isExcule,
           path: pathRegex
         })

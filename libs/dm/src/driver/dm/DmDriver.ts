@@ -20,7 +20,7 @@ import * as DM from 'dmdb'
  * Organizes communication with DMDB RDBMS.
  */
 export class DmDriver extends OracleDriver {
-  spatialTypes: ColumnType[] = ['st_geometry', 'st_point']
+  override spatialTypes: ColumnType[] = ['st_geometry', 'st_point']
   spatialFeatureType = [
     'point',
     'curve',
@@ -34,7 +34,7 @@ export class DmDriver extends OracleDriver {
     'multisurface',
     'multipolygon'
   ]
-  supportedDataTypes: ColumnType[] = [
+  override supportedDataTypes: ColumnType[] = [
     'char',
     'nchar',
     'nvarchar2',
@@ -69,7 +69,7 @@ export class DmDriver extends OracleDriver {
     'st_geometry',
     'st_point'
   ]
-  options: DmConnectionOptions & OracleConnectionOptions
+  override options!: DmConnectionOptions & OracleConnectionOptions
   constructor(connection: DataSource) {
     super(connection)
   }
@@ -104,15 +104,18 @@ export class DmDriver extends OracleDriver {
             return `dmgeo.ST_MLineFromText(${paramName}, ${column.srid || 0})`
           case 'multipolygon':
             return `dmgeo.ST_MLineFromText(${paramName}, ${column.srid || 0})`
+          default:
+            return `dmgeo.ST_GeoMFromText(${paramName}, ${column.srid || 0})`
         }
       }
     }
+    return `dmgeo.ST_GeoMFromText(${paramName}, ${column.srid || 0})`
   }
 
   /**
    * 加载所有驱动程序依赖项。
    */
-  protected loadDependencies(): void {
+  protected override loadDependencies(): void {
     try {
       this.oracle = require('dmdb')
       this.oracle.OBJECT = DM.OUT_FORMAT_OBJECT
@@ -127,7 +130,7 @@ export class DmDriver extends OracleDriver {
    * @param options
    * @returns
    */
-  protected async createPool(
+  protected override async createPool(
     options: OracleConnectionOptions,
     credentials?: OracleConnectionCredentialsOptions
   ): Promise<NoSafe> {
@@ -196,11 +199,11 @@ export class DmDriver extends OracleDriver {
   /**
    * 创建用于执行数据库查询的查询运行程序。
    */
-  createQueryRunner(mode: ReplicationMode) {
+  override createQueryRunner(mode: ReplicationMode) {
     return new DmQueryRunner(this, mode)
   }
 
-  createFullType(column: TableColumn): string {
+  override createFullType(column: TableColumn): string {
     let type = column.type
 
     // used 'getColumnLength()' method, because in Oracle column length is required for some data types.
@@ -311,7 +314,7 @@ export class DmDriver extends OracleDriver {
     return targetType !== type
   }
 
-  normalizeType(column: {
+  override normalizeType(column: {
     type?: ColumnType
     length?: number | string
     precision?: number | null
@@ -337,7 +340,7 @@ export class DmDriver extends OracleDriver {
     return comment
   }
 
-  findChangedColumns(
+  override findChangedColumns(
     tableColumns: TableColumn[],
     columnMetadatas: ColumnMetadata[]
   ): ColumnMetadata[] {
@@ -409,7 +412,7 @@ export class DmDriver extends OracleDriver {
    * @param columnMetadata
    * @returns
    */
-  prepareHydratedValue(value: NoSafe, columnMetadata: ColumnMetadata) {
+  override prepareHydratedValue(value: NoSafe, columnMetadata: ColumnMetadata) {
     if (value === null || value === undefined) {
       return columnMetadata.transformer
         ? ApplyValueTransformers.transformFrom(columnMetadata.transformer, value)
@@ -463,7 +466,7 @@ export class DmDriver extends OracleDriver {
    * @param columnMetadata
    * @returns
    */
-  preparePersistentValue(value: NoSafe, columnMetadata: ColumnMetadata) {
+  override preparePersistentValue(value: NoSafe, columnMetadata: ColumnMetadata) {
     if (columnMetadata.transformer) {
       value = ApplyValueTransformers.transformTo(columnMetadata.transformer, value)
     }

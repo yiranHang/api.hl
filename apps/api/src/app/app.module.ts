@@ -10,16 +10,15 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { PassPortModule } from './login/passport.module'
 import { PassPortService } from './login/passport.service'
+import { NoSafe } from 'libs/documents/src/type'
 
 @Module({
   imports: [
     DataBaseModule.forRootAsync({
       imports: [ConfigModule.forRoot()],
       useFactory: (config: ConfigProvider) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const dbconfig: any[] = config.get('database')
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        dbconfig.forEach((item: any) => {
+        const dbconfig: NoSafe[] = config.get('database')
+        dbconfig.forEach((item: NoSafe) => {
           item.password = CryptoUtil.sm4Decrypt(item.password)
         })
         return dbconfig

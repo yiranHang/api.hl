@@ -12,7 +12,7 @@ import { DataBaseSource } from './database.source'
  */
 export const factoryToOptions = (factory: DatabaseModuleAsyncOptions) => {
   const inject = (factory.inject || []).map(r => (typeof r === 'function' ? new r() : r))
-  const options = factory.useFactory(...inject)
+  const options = factory.useFactory && factory.useFactory(...inject)
   return options
 }
 
@@ -55,7 +55,7 @@ export const getProviders = (
   isTree: boolean,
   name: string
 ) => {
-  const entities = []
+  const entities: NoSafe[] = []
   const provides = repositories.map(repository => {
     const entity = Reflect.getMetadata(BIND_REPOSITORY, repository)
     entities.push(entity)

@@ -20,7 +20,7 @@ export class OaInterceptor<T = unknown> implements NestInterceptor<T, unknown> {
     const request = context.switchToHttp().getRequest() as Request & {
       user: { id: string }
     }
-    const type = request?.query?.type as string
+    const type = request?.query?.['type'] as string
     const { id } = request?.user || {}
     return next.handle().pipe(
       map(async data => {

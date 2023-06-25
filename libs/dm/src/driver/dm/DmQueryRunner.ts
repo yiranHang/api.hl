@@ -94,7 +94,7 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
    * @param downQueries
    * @returns
    */
-  protected async executeQueries(
+  protected override async executeQueries(
     upQueries: Query | Query[],
     downQueries: Query | Query[]
   ): Promise<void> {
@@ -125,7 +125,11 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
     }
   }
 
-  async query(query: string, parameters?: NoSafe[], useStructuredResult = false): Promise<NoSafe> {
+  override async query(
+    query: string,
+    parameters?: NoSafe[],
+    useStructuredResult = false
+  ): Promise<NoSafe> {
     if (query.indexOf('false') > -1) {
       query = query.replace(/false/g, '0')
     }
@@ -138,7 +142,7 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
   /**
    * 该方法拼接一个dll 数据结构生成语句
    */
-  protected buildCreateColumnSql(column: TableColumn) {
+  protected override buildCreateColumnSql(column: TableColumn) {
     let c = `"${column.name}" ${this.connection.driver.createFullType(column)}`
     if (column.charset) {
       c += ` CHARACTER SET ${column.charset}`
@@ -170,7 +174,7 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
    * @param target
    * @returns
    */
-  protected escapePath(target: Table | View | string): string {
+  protected override escapePath(target: Table | View | string): string {
     const { schema, tableName } = this.driver.parseTableName(target)
     return `"${schema}"."${tableName}"`
   }
@@ -180,7 +184,7 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
    * 由于达梦支持IF EXISTS
    * 所以添加是否存在判断
    */
-  protected dropIndexSql(indexOrName: TableIndex | string): Query {
+  protected override dropIndexSql(indexOrName: TableIndex | string): Query {
     const indexName = InstanceChecker.isTableIndex(indexOrName) ? indexOrName.name : indexOrName
     return new Query(`DROP INDEX IF EXISTS ${this.driver.schema}."${indexName}"`)
   }
@@ -188,7 +192,7 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
   /**
    * Builds create index sql.
    */
-  protected createIndexSql(table: Table, index: TableIndex): Query {
+  protected override createIndexSql(table: Table, index: TableIndex): Query {
     const columns = index.columnNames.map(columnName => `"${columnName}"`).join(', ')
     return new Query(
       `CREATE ${index.isSpatial ? 'SPATIAL' : ''} ${index.isUnique ? 'UNIQUE ' : ''}INDEX "${
@@ -204,7 +208,7 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
    * @param tableOrName
    * @param column
    */
-  async addColumn(tableOrName: Table | string, column: TableColumn): Promise<void> {
+  override async addColumn(tableOrName: Table | string, column: TableColumn): Promise<void> {
     const table = InstanceChecker.isTable(tableOrName)
       ? tableOrName
       : await this.getCachedTable(tableOrName)
@@ -348,7 +352,7 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
    * @param tableOrName
    * @param foreignKeys
    */
-  async createForeignKeys(
+  override async createForeignKeys(
     tableOrName: Table | string,
     foreignKeys: TableForeignKey[]
   ): Promise<void> {
@@ -364,7 +368,7 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
    * @param tableOrName
    * @param checkConstraints
    */
-  async dropCheckConstraints(
+  override async dropCheckConstraints(
     tableOrName: Table | string,
     checkConstraints: TableCheck[]
   ): Promise<void> {
@@ -380,7 +384,7 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
    * @param tableOrName
    * @param foreignKeys
    */
-  async dropForeignKeys(
+  override async dropForeignKeys(
     tableOrName: Table | string,
     foreignKeys: TableForeignKey[]
   ): Promise<void> {
@@ -396,7 +400,7 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
    * @param tableOrName
    * @param indices
    */
-  async createIndices(tableOrName: Table | string, indices: TableIndex[]): Promise<void> {
+  override async createIndices(tableOrName: Table | string, indices: TableIndex[]): Promise<void> {
     for (const index of indices) {
       await this.createIndex(tableOrName, index)
     }
@@ -409,7 +413,7 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
    * @param tableOrName
    * @param indices
    */
-  async dropIndices(tableOrName: Table | string, indices: TableIndex[]): Promise<void> {
+  override async dropIndices(tableOrName: Table | string, indices: TableIndex[]): Promise<void> {
     for (const index of indices) {
       await this.dropIndex(tableOrName, index)
     }
@@ -423,7 +427,7 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
    * @param oldTableColumnOrName
    * @param newColumn
    */
-  async changeColumn(
+  override async changeColumn(
     tableOrName: Table | string,
     oldTableColumnOrName: TableColumn | string,
     newColumn: TableColumn
@@ -830,7 +834,11 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
     }
   }
 
-  protected isDefaultColumnLength(table: Table, column: TableColumn, length: string): boolean {
+  protected override isDefaultColumnLength(
+    table: Table,
+    column: TableColumn,
+    length: string
+  ): boolean {
     // if table have metadata, we check if length is specified in column metadata
     if (this.connection.hasMetadata(table.name)) {
       const metadata = this.connection.getMetadata(table.name)
@@ -870,7 +878,7 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
    * @param createForeignKeys
    * @returns
    */
-  protected createTableSql(table: Table, createForeignKeys?: boolean): Query {
+  protected override createTableSql(table: Table, createForeignKeys?: boolean): Query {
     const columnDefinitions = table.columns
       .map(column => this.buildCreateColumnSql(column))
       .join(', ')
@@ -1030,7 +1038,7 @@ export class DmQueryRunner extends OracleQueryRunner implements QueryRunner {
    * @param tableNames
    * @returns
    */
-  protected async loadTables(tableNames?: string[]): Promise<Table[]> {
+  protected override async loadTables(tableNames?: string[]): Promise<Table[]> {
     /** 此处判断达梦空间数据是否开启 */
     await this.processDmGeo()
 

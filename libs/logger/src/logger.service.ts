@@ -46,7 +46,7 @@ export class LoggerService extends Logger {
     return this.repository.findOne({ where: { id } })
   }
 
-  async createOne<T = Lg>(data: T) {
+  async createOne<T = Lg>(data: T extends Lg ? T : Lg) {
     return this.save(data)
   }
 

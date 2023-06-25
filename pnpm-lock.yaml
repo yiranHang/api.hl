@@ -129,6 +129,9 @@ devDependencies:
   '@types/node':
     specifier: ~18.7.1
     version: registry.npmmirror.com/@types/node@18.7.1
+  '@types/passport-jwt':
+    specifier: ^3.0.8
+    version: registry.npmmirror.com/@types/passport-jwt@3.0.8
   '@types/underscore':
     specifier: ^1.11.5
     version: registry.npmmirror.com/@types/underscore@1.11.5
@@ -3641,7 +3644,6 @@ packages:
     version: 9.0.2
     dependencies:
       '@types/node': registry.npmmirror.com/@types/node@18.7.1
-    dev: false
 
   registry.npmmirror.com/@types/luxon@3.3.0:
     resolution: {integrity: sha512-uKRI5QORDnrGFYgcdAVnHvEIvEZ8noTpP/Bg+HeUzZghwinDlIS87DEenV5r1YoOF9G4x600YsUXLWZ19rmTmg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/luxon/-/luxon-3.3.0.tgz}
@@ -3670,6 +3672,33 @@ packages:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/parse-json/-/parse-json-4.0.0.tgz}
     name: '@types/parse-json'
     version: 4.0.0
+    dev: true
+
+  registry.npmmirror.com/@types/passport-jwt@3.0.8:
+    resolution: {integrity: sha512-VKJZDJUAHFhPHHYvxdqFcc5vlDht8Q2pL1/ePvKAgqRThDaCc84lSYOTQmnx3+JIkDlN+2KfhFhXIzlcVT+Pcw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/passport-jwt/-/passport-jwt-3.0.8.tgz}
+    name: '@types/passport-jwt'
+    version: 3.0.8
+    dependencies:
+      '@types/express': registry.npmmirror.com/@types/express@4.17.17
+      '@types/jsonwebtoken': registry.npmmirror.com/@types/jsonwebtoken@9.0.2
+      '@types/passport-strategy': registry.npmmirror.com/@types/passport-strategy@0.2.35
+    dev: true
+
+  registry.npmmirror.com/@types/passport-strategy@0.2.35:
+    resolution: {integrity: sha512-o5D19Jy2XPFoX2rKApykY15et3Apgax00RRLf0RUotPDUsYrQa7x4howLYr9El2mlUApHmCMv5CZ1IXqKFQ2+g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/passport-strategy/-/passport-strategy-0.2.35.tgz}
+    name: '@types/passport-strategy'
+    version: 0.2.35
+    dependencies:
+      '@types/express': registry.npmmirror.com/@types/express@4.17.17
+      '@types/passport': registry.npmmirror.com/@types/passport@1.0.12
+    dev: true
+
+  registry.npmmirror.com/@types/passport@1.0.12:
+    resolution: {integrity: sha512-QFdJ2TiAEoXfEQSNDISJR1Tm51I78CymqcBa8imbjo6dNNu+l2huDxxbDEIoFIwOSKMkOfHEikyDuZ38WwWsmw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/passport/-/passport-1.0.12.tgz}
+    name: '@types/passport'
+    version: 1.0.12
+    dependencies:
+      '@types/express': registry.npmmirror.com/@types/express@4.17.17
     dev: true
 
   registry.npmmirror.com/@types/prettier@2.7.3:

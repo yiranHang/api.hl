@@ -1,6 +1,6 @@
 import { Menu } from './menu.entity'
 import { TreeRepository } from 'typeorm'
-import { BindRepository } from '@admin-api/database'
+import { BindRepository, NoSafe } from '@admin-api/database'
 
 @BindRepository(Menu)
 export class MenuRepository extends TreeRepository<Menu> {
@@ -19,14 +19,11 @@ export class MenuRepository extends TreeRepository<Menu> {
     }
 
     const ergodicTree = (data: Menu[], root?: Menu) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const menus: any[] = []
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const searchKey: any[] = []
+      const menus: NoSafe[] = []
+      const searchKey: NoSafe[] = []
       let ishasChildren = false
       const setAcls = (menu: Menu) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const permissions: any = {}
+        const permissions: NoSafe = {}
         const { permission, ...arg } = menu
         const {
           icon,

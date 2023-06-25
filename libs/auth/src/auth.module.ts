@@ -46,7 +46,7 @@ export class AuthModule {
     })
     return {
       module: AuthModule,
-      imports: [JWT, ...(options.imports || [])],
+      imports: [JWT, ...(options?.imports || [])],
       global: true,
       providers: [AuthService, JwtStrategy, ...authProvider],
       exports: [...authProvider, JWT, AuthService, JwtStrategy]

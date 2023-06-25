@@ -6,7 +6,7 @@ import { Permission } from './permission/permission.entity'
 import { Role } from './role/role.entity'
 import { User } from './user/user.entity'
 import { ConfigService } from './core/service/config.service'
-import { DataBaseSource } from '@admin-api/database'
+import { DataBaseSource, NoSafe } from '@admin-api/database'
 
 @Injectable()
 export class SystemService {
@@ -468,7 +468,7 @@ export class SystemService {
         account: this.config.defaultAccount
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, no-empty-function, @typescript-eslint/no-empty-function
-      .catch((r: any) => {})
+      .catch((r: NoSafe) => {})
     if (!user) {
       await queryRunner.connect()
       await queryRunner.startTransaction()

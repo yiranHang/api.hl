@@ -38,7 +38,10 @@ export class AclMiddleware {
   getUserId(req: Request): string {
     const { authorization } = req.headers
     const { user } = req.query || {}
-    const { id } = (this.jwt?.decode(authorization?.split(' ')[1]) || {}) as Record<'id', string>
+    const { id } = (this.jwt?.decode((authorization as string)?.split(' ')[1]) || {}) as Record<
+      'id',
+      string
+    >
     return id ?? (user as string)
   }
 }
