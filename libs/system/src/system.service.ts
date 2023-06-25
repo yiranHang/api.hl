@@ -25,6 +25,83 @@ export class SystemService {
     return `/${rootName}/${path}`
   }
 
+  private getSystemParentEntity() {
+    const menu = new Menu()
+    menu.isLeaf = false
+    menu.icon = 'Tools'
+    menu.title = '系统管理'
+    menu.name = 'system'
+    menu.path = '/system'
+    menu.redirect = '/system/userManage'
+    menu.sort = 6
+    return menu
+  }
+
+  private getDataScreenEntity() {
+    const menu = new Menu()
+    menu.isLeaf = true
+    menu.icon = 'Histogram'
+    menu.title = '数据大屏'
+    menu.name = 'dataScreen'
+    menu.path = '/dataScreen'
+    menu.component = '/dataScreen/index'
+    menu.isFull = true
+    menu.isKeepAlive = true
+    menu.sort = 2
+    menu.permission = this.getBasePermission()
+    return menu
+  }
+
+  private getHomeEntity() {
+    const menu = new Menu()
+    menu.isLeaf = true
+    menu.icon = 'HomeFilled'
+    menu.title = '首页'
+    menu.name = 'home'
+    menu.path = '/layout/home'
+    menu.component = '/home/index'
+    menu.isKeepAlive = true
+    menu.sort = 1
+    menu.permission = this.getBasePermission()
+    return menu
+  }
+
+  private getAssemblyParentEntity() {
+    const menu = new Menu()
+    menu.isLeaf = false
+    menu.icon = 'Briefcase'
+    menu.title = '常用组件'
+    menu.name = 'assembly'
+    menu.path = '/assembly'
+    menu.redirect = '/assembly/guide'
+    menu.sort = 3
+    return menu
+  }
+
+  private getFormParentEntity() {
+    const menu = new Menu()
+    menu.isLeaf = false
+    menu.icon = 'Document'
+    menu.title = '表单 Form'
+    menu.name = 'form'
+    menu.path = '/form'
+    menu.redirect = '/form/proForm'
+    menu.sort = 4
+    return menu
+  }
+
+  private getEchartsParentEntity() {
+    const menu = new Menu()
+    menu.isLeaf = false
+    menu.icon = 'TrendCharts'
+    menu.title = 'Echarts'
+    menu.name = 'echarts	'
+    menu.path = '/echarts	'
+    menu.redirect = '/echarts/waterChart'
+    menu.sort = 5
+    return menu
+  }
+
   private getSystemEntity() {
     return [
       {
@@ -134,6 +211,181 @@ export class SystemService {
     ]
   }
 
+  private getAssemblyEntity() {
+    return [
+      {
+        isLeaf: true,
+        title: '引导页',
+        path: '/assembly/guide',
+        name: 'guide',
+        icon: 'Menu',
+        component: '/assembly/guide/index',
+        sort: 1,
+        permission: this.getBasePermission()
+      },
+      {
+        isLeaf: true,
+        title: '标签页操作',
+        path: '/assembly/tabs',
+        name: 'tabs',
+        icon: 'Menu',
+        component: '/assembly/tabs/index',
+        sort: 2,
+        permission: this.getBasePermission()
+      },
+      {
+        isLeaf: true,
+        title: '图标选择器',
+        path: '/assembly/selectIcon',
+        name: 'selectIcon',
+        icon: 'Menu',
+        component: '/assembly/selectIcon/index',
+        sort: 3,
+        permission: this.getBasePermission()
+      },
+      {
+        isLeaf: true,
+        title: '分类筛选器',
+        path: '/assembly/selectFilter',
+        name: 'selectFilter',
+        icon: 'Menu',
+        component: '/assembly/selectFilter/index',
+        sort: 4,
+        permission: this.getBasePermission()
+      },
+      {
+        isLeaf: true,
+        title: 'SVG 图标',
+        path: '/assembly/svgIcon',
+        name: 'svgIcon',
+        icon: 'Menu',
+        component: '/assembly/svgIcon/index',
+        sort: 5,
+        permission: this.getBasePermission()
+      },
+      {
+        isLeaf: true,
+        title: '文件上传',
+        path: '/assembly/uploadFile',
+        name: 'uploadFile',
+        icon: 'Menu',
+        component: '/assembly/uploadFile/index',
+        sort: 6,
+        permission: this.getBasePermission()
+      },
+      {
+        isLeaf: true,
+        title: '批量添加数据',
+        path: '/assembly/batchImport',
+        name: 'batchImport',
+        icon: 'Menu',
+        component: '/assembly/batchImport/index',
+        sort: 7,
+        permission: this.getBasePermission()
+      },
+      {
+        isLeaf: true,
+        title: '富文本编辑器',
+        path: '/assembly/wangEditor',
+        name: 'wangEditor',
+        icon: 'Menu',
+        component: '/assembly/wangEditor/index',
+        sort: 8,
+        permission: this.getBasePermission()
+      },
+      {
+        isLeaf: true,
+        title: '拖拽组件',
+        path: '/assembly/draggable',
+        name: 'draggable',
+        icon: 'Menu',
+        component: '/assembly/draggable/index',
+        sort: 9,
+        permission: this.getBasePermission()
+      }
+    ]
+  }
+
+  private getFormEntity() {
+    return [
+      {
+        isLeaf: true,
+        title: '超级 Form',
+        path: '/form/proForm',
+        name: 'proForm',
+        icon: 'Menu',
+        component: '/form/proForm/index',
+        sort: 1,
+        permission: this.getBasePermission()
+      }
+    ]
+  }
+
+  private getEchartsEntity() {
+    return [
+      {
+        isLeaf: true,
+        title: '水型图',
+        path: '/echarts/waterChart',
+        name: 'waterChart',
+        icon: 'Menu',
+        component: '/echarts/waterChart/index',
+        sort: 1,
+        permission: this.getBasePermission()
+      },
+      {
+        isLeaf: true,
+        title: '柱状图',
+        path: '/echarts/columnChart',
+        name: 'columnChart',
+        icon: 'Menu',
+        component: '/echarts/columnChart/index',
+        sort: 1,
+        permission: this.getBasePermission()
+      },
+      {
+        isLeaf: true,
+        title: '折线图',
+        path: '/echarts/lineChart',
+        name: 'lineChart',
+        icon: 'Menu',
+        component: '/echarts/lineChart/index',
+        sort: 1,
+        permission: this.getBasePermission()
+      },
+      {
+        isLeaf: true,
+        title: '饼图',
+        path: '/echarts/pieChart',
+        name: 'pieChart',
+        icon: 'Menu',
+        component: '/echarts/pieChart/index',
+        sort: 1,
+        permission: this.getBasePermission()
+      },
+      {
+        isLeaf: true,
+        title: '雷达图',
+        path: '/echarts/radarChart',
+        name: 'radarChart',
+        icon: 'Menu',
+        component: '/echarts/radarChart/index',
+        sort: 1,
+        permission: this.getBasePermission()
+      },
+      {
+        isLeaf: true,
+        title: '嵌套环形图',
+        path: '/echarts/nestedChart',
+        name: 'nestedChart',
+        icon: 'Menu',
+        component: '/echarts/nestedChart/index',
+        sort: 1,
+        permission: this.getBasePermission()
+      }
+    ]
+  }
+
   /**
    * @description:
    * @Date: 2022-06-01 16:47:16
@@ -151,16 +403,16 @@ export class SystemService {
 
   async setPermission(
     manager: EntityManager,
-    me: Menu,
+    role: Role,
     mu: Partial<Menu> & { url: string },
-    role: Role
+    me?: Menu
   ) {
     const permissions: Permission[] = []
     for (const key of mu.permission as Permission[]) {
       const permission = new Permission()
       permission.name = key.name
       permission.code = key.code
-      permission.menu = me
+      permission.menu = me ? me : (mu as Menu)
       permission.path = this.getCompletePath(key.path || `${mu.url}/:id`)
       permission.method = key.method
       permissions.push(permission)
@@ -172,8 +424,7 @@ export class SystemService {
     }
   }
 
-  async setMenu(manager: EntityManager, me: Menu, role: Role) {
-    const menus = this.getSystemEntity()
+  async setMenu(manager: EntityManager, me: Menu, menus: Menu[], role: Role) {
     for (const mu of menus) {
       const men = new Menu()
       men.isLeaf = mu.isLeaf
@@ -185,19 +436,11 @@ export class SystemService {
       men.sort = mu.sort
       men.parent = me
       const m = await manager.save(Menu, men)
-      await this.setPermission(manager, m, mu as Partial<Menu> & { url: string }, role)
+      await this.setPermission(manager, role, mu as Partial<Menu> & { url: string }, m)
     }
   }
 
-  async setParentMenu(manager: EntityManager) {
-    const menu = new Menu()
-    menu.isLeaf = false
-    menu.icon = 'Tools'
-    menu.title = '系统管理'
-    menu.name = 'system'
-    menu.path = '/system'
-    menu.redirect = '/system/userManage'
-    menu.sort = 1
+  async setParentMenu(manager: EntityManager, menu: Menu) {
     return manager.save(Menu, menu)
   }
 
@@ -237,9 +480,47 @@ export class SystemService {
         /**管理用户和角色，添加关联关系 */
         await queryRunner.manager.createQueryBuilder(User, 'u').relation('roles').of(user).add(role)
 
+        /**新增默认 首页 菜单 */
+        const homeParent = this.getHomeEntity()
+        const homeMenu = await this.setParentMenu(queryRunner.manager, homeParent)
+        await this.setPermission(
+          queryRunner.manager,
+          role,
+          homeMenu as Partial<Menu> & { url: string }
+        )
+
+        /**新增默认 数据大屏 菜单 */
+        const dataScreenParent = this.getDataScreenEntity()
+        const dataScreenMenu = await this.setParentMenu(queryRunner.manager, dataScreenParent)
+        await this.setPermission(
+          queryRunner.manager,
+          role,
+          dataScreenMenu as Partial<Menu> & { url: string }
+        )
+
         /**新增默认系统管理-菜单管理 */
-        const parentMenu = await this.setParentMenu(queryRunner.manager)
-        await this.setMenu(queryRunner.manager, parentMenu, role)
+        const systemParent = this.getSystemParentEntity()
+        const systemChildren = this.getSystemEntity() as unknown as Menu[]
+        const systemMenu = await this.setParentMenu(queryRunner.manager, systemParent)
+        await this.setMenu(queryRunner.manager, systemMenu, systemChildren, role)
+
+        /**新增默认 常用组件 菜单 */
+        const assemblyParent = this.getAssemblyParentEntity()
+        const assemblyChildren = this.getAssemblyEntity() as unknown as Menu[]
+        const assemblyMenu = await this.setParentMenu(queryRunner.manager, assemblyParent)
+        await this.setMenu(queryRunner.manager, assemblyMenu, assemblyChildren, role)
+
+        /**新增默认 form 菜单 */
+        const formParent = this.getFormParentEntity()
+        const formChildren = this.getFormEntity() as unknown as Menu[]
+        const formMenu = await this.setParentMenu(queryRunner.manager, formParent)
+        await this.setMenu(queryRunner.manager, formMenu, formChildren, role)
+
+        /**新增默认 echarts 菜单 */
+        const echartsParent = this.getEchartsParentEntity()
+        const echartsChildren = this.getEchartsEntity() as unknown as Menu[]
+        const echartsMenu = await this.setParentMenu(queryRunner.manager, echartsParent)
+        await this.setMenu(queryRunner.manager, echartsMenu, echartsChildren, role)
 
         await queryRunner.commitTransaction()
       } catch (err: unknown) {
