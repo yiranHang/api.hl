@@ -58,7 +58,7 @@ export class SystemService {
     menu.icon = 'HomeFilled'
     menu.title = '首页'
     menu.name = 'home'
-    menu.path = '/layout/home'
+    menu.path = '/home'
     menu.component = '/home/index'
     menu.isKeepAlive = true
     menu.sort = 1
