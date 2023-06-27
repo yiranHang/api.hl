@@ -1,7 +1,7 @@
 import { AuthModule } from '@admin-api/auth'
 import { ConfigModule, ConfigProvider } from '@admin-api/common'
 import { DataBaseModule } from '@admin-api/database'
-import { DocumentsModule } from '@admin-api/documents'
+import { DocumentsModule, NoSafe } from '@admin-api/documents'
 import { OaModule, OAOption } from '@admin-api/oa'
 import { CryptoUtil, SystemModule, UserRepository } from '@admin-api/system'
 import { Module } from '@nestjs/common'
@@ -10,7 +10,6 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { PassPortModule } from './login/passport.module'
 import { PassPortService } from './login/passport.service'
-import { NoSafe } from 'libs/documents/src/type'
 
 @Module({
   imports: [
