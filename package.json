@@ -8,7 +8,7 @@
     "start:dev": "nx serve api --watch",
     "start:test": "cross-env NODE_ENV=test nx serve api",
     "start:prod": "cross-env NODE_ENV=production nx serve api",
-    "prebuild": "rimraf dist/",
+    "prebuild": "npx rimraf dist/",
     "build": "nx build api",
     "prepare": "husky install",
     "lint:prettier": "prettier --write \"apps/api/src/**/*.{js,ts,json,tsx,,md}\" && prettier --write \"libs/**/*.{js,ts,json,tsx,,md}\"",
