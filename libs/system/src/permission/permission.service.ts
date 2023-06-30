@@ -2,7 +2,6 @@ import { HttpException, Injectable } from '@nestjs/common'
 import { Equal, FindManyOptions } from 'typeorm'
 import { ConfigService } from '../core/service/config.service'
 import { QueryEntity } from '../system.type'
-import { UserRepository } from '../user/user.repository'
 import { PermissionRepository } from './permission.repository'
 import { Permission } from './permission.entity'
 import { DataBaseSource, NoSafe } from '@admin-api/database'
@@ -12,7 +11,6 @@ export class PermissionService {
   constructor(
     readonly permission: PermissionRepository,
     public config: ConfigService,
-    private user: UserRepository,
     private dataSource: DataBaseSource
   ) {}
 

@@ -1,13 +1,12 @@
 import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common'
 import { EntityManager, Equal, FindManyOptions, IsNull } from 'typeorm'
-import { UserRepository } from '../user/user.repository'
 import { MenuRepository } from './menu.repository'
 import { Menu } from './menu.entity'
 import { Pages, QueryEntity } from '../system.type'
 import { ConfigService } from '../core/service/config.service'
 import { Permission } from '../permission/permission.entity'
 import { DataBaseSource, NoSafe } from '@admin-api/database'
-import { flatten, groupBy } from 'underscore'
+import { groupBy } from 'underscore'
 import { User } from '../user/user.entity'
 
 @Injectable()
@@ -15,7 +14,6 @@ export class MenuService {
   constructor(
     readonly repo: MenuRepository,
     private config: ConfigService,
-    private userRepository: UserRepository,
     private dataSource: DataBaseSource
   ) {}
 
@@ -274,9 +272,9 @@ export class MenuService {
     ).filter(r => !r.forbidden)
     const acl = Object.keys(groupBy(data, 'acl'))
     const menu = await this.getTreeMenus(acl)
-    // if (!menu || !menu.length) {
-    //   throw new UnauthorizedException('您当前账号没有权限访问该平台')
-    // }
+    if (!menu || !menu.length) {
+      throw new UnauthorizedException('您当前账号没有权限访问该平台')
+    }
     const ra = getAcl(data)
 
     return { menu, ...ra }

@@ -112,7 +112,6 @@ export class RoleService {
       await queryRunner.commitTransaction()
       return this.getOne(id)
     } catch (err: unknown) {
-      console.log('🚀 ~ RoleService ~ err:', err)
       await queryRunner.rollbackTransaction()
     } finally {
       await queryRunner.release()

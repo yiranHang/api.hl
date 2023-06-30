@@ -8,15 +8,13 @@ import { Role } from '../role/role.entity'
 import { UserRepository } from './user.repository'
 import { User } from './user.entity'
 import { DataBaseSource } from '@admin-api/database'
-import { MenuService } from '../menu/menu.service'
 @Injectable()
 export class UserService {
   constructor(
     readonly repo: UserRepository,
     private acl: AclService,
     private config: ConfigService,
-    private dataSource: DataBaseSource,
-    private menu: MenuService
+    private dataSource: DataBaseSource
   ) {}
 
   async validUser(user: User, password?: string) {
@@ -30,10 +28,6 @@ export class UserService {
       if (password && user.password !== this.repo.cryptoPassword(password)) {
         throw new HttpException('密码不正确，请重新输入', 401)
       }
-      // const { menu } = await this.menu.getRoleMenuAclByUser(user.id as string)
-      // if (!menu.length) {
-      //   throw new HttpException('当前账号没权限访问', 401)
-      // }
     }
   }
   /**
