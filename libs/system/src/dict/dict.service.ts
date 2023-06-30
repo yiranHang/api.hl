@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common'
-import { FindManyOptions, Like } from 'typeorm'
+import { Equal, FindManyOptions, FindOptionsWhere, Like } from 'typeorm'
 import { Pages, QueryEntity } from '../system.type'
 import { DictDetailRepository, DictRepository } from './dict.repository'
 import { Dict } from './dict.entity'
@@ -11,9 +11,8 @@ export class DictService {
 
   async getMany(query: QueryEntity<Dict>): Promise<Pages<Dict>> {
     const { pi, ps, key, name } = query || {}
-    const findCondition: FindManyOptions<Dict> = {
-      where: {}
-    }
+    const findCondition: FindManyOptions<Dict> = {}
+    const where: FindOptionsWhere<Dict> = {}
     const page = isNaN(Number(pi)) ? 1 : Number(pi)
     const limit = isNaN(Number(ps)) ? 0 : Number(ps)
     if (limit > 0) {
@@ -21,10 +20,13 @@ export class DictService {
       findCondition.take = limit
     }
     if (key && key.trim()) {
-      findCondition.where['key'] = Like(`%${key.trim()}%`)
+      where.key = Like(`%${key.trim()}%`)
     }
     if (name && name.trim()) {
-      findCondition.where['name'] = Like(`%${name.trim()}%`)
+      where.name = Like(`%${name.trim()}%`)
+    }
+    if (Object.keys(where).length) {
+      findCondition.where = where
     }
     const [data, count] = await this.repo.findAndCount(findCondition)
     return {
@@ -88,9 +90,8 @@ export class DictService {
 
   async getDetailMany(query: QueryEntity<DictDetail>): Promise<Pages<DictDetail>> {
     const { pi, ps, label, disabled, dict } = query || {}
-    const findCondition: FindManyOptions<DictDetail> = {
-      where: { label }
-    }
+    const findCondition: FindManyOptions<DictDetail> = {}
+    const where: FindOptionsWhere<DictDetail> = {}
     const page = isNaN(Number(pi)) ? 1 : Number(pi)
     const limit = isNaN(Number(ps)) ? 0 : Number(ps)
     if (limit > 0) {
@@ -98,13 +99,16 @@ export class DictService {
       findCondition.take = limit
     }
     if (label && label.trim()) {
-      findCondition.where['label'] = Like(`%${label.trim()}%`)
+      where.label = Like(`%${label.trim()}%`)
     }
     if (dict) {
-      findCondition.where['dict'] = { id: dict }
+      where.dict = { id: dict } as Dict
     }
     if (typeof disabled !== 'undefined') {
-      findCondition.where['disabled'] = disabled
+      where.disabled = disabled
+    }
+    if (Object.keys(where).length) {
+      findCondition.where = where
     }
     const [data, count] = await this.detail.findAndCount(findCondition)
     return {

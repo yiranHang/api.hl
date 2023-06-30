@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common'
-import { Equal, FindManyOptions, In, Like, Not } from 'typeorm'
+import { Equal, FindManyOptions, FindOptionsWhere, In, Like, Not } from 'typeorm'
 import { AclService } from '../core/service/acl.service'
 import { ConfigService } from '../core/service/config.service'
 import { Pages, QueryEntity } from '../system.type'
@@ -54,11 +54,11 @@ export class UserService {
   }
 
   async getMany(query: QueryEntity<User>): Promise<Pages<User>> {
-    const { pi, ps, name, ids } = query || {}
+    const { pi, ps, name, account, ids } = query || {}
     const findCondition: FindManyOptions<User> = {
-      relations: ['roles'],
-      where: {}
+      relations: ['roles']
     }
+    const where: FindOptionsWhere<User> = {}
     const page = isNaN(Number(pi)) ? 1 : Number(pi)
     const limit = isNaN(Number(ps)) ? 0 : Number(ps)
 
@@ -67,10 +67,16 @@ export class UserService {
       findCondition.take = limit
     }
     if (name && name.trim()) {
-      findCondition.where['name'] = Like(`%${name.trim()}%`)
+      where.name = Like(`%${name.trim()}%`)
+    }
+    if (account && account.trim()) {
+      where.account = Like(`%${account.trim()}%`)
     }
     if (Array.isArray(ids) && ids.length) {
-      findCondition.where['id'] = Not(In(ids))
+      where.id = Not(In(ids))
+    }
+    if (Object.keys(where).length) {
+      findCondition.where = where
     }
     const [data, count] = await this.repo.findAndCount(findCondition)
     return {

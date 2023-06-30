@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common'
-import { FindManyOptions, Like } from 'typeorm'
+import { FindManyOptions, FindOptionsWhere, Like } from 'typeorm'
 import { ConfigService } from '../core/service/config.service'
 import { Pages, QueryEntity } from '../system.type'
 import { RoleRepository } from './role.repository'
@@ -15,10 +15,11 @@ export class RoleService {
   ) {}
 
   async getMany(query: QueryEntity<Role>): Promise<Pages<Role>> {
-    const { pi, ps, name } = query || {}
+    const { pi, ps, name, code } = query || {}
     const findCondition: FindManyOptions<Role> = {
       relations: ['permissions']
     }
+    const where: FindOptionsWhere<Role> = {}
     const page = isNaN(Number(pi)) ? 1 : Number(pi)
     const limit = isNaN(Number(ps)) ? 0 : Number(ps)
     if (limit > 0) {
@@ -26,9 +27,13 @@ export class RoleService {
       findCondition.take = limit
     }
     if (name && name.trim()) {
-      findCondition.where = {
-        name: Like(`%${name.trim()}%`)
-      }
+      where.name = Like(`%${name.trim()}%`)
+    }
+    if (code && code.trim()) {
+      where.code = Like(`%${code.trim()}%`)
+    }
+    if (Object.keys(where).length) {
+      findCondition.where = where
     }
     const [data, count] = await this.repo.findAndCount(findCondition)
     return {

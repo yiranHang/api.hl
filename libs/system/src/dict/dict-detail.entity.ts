@@ -9,19 +9,19 @@ import { Dict } from './dict.entity'
 })
 export class DictDetail extends BaseEntity {
   @Column({ type: 'varchar', comment: '展示标签' })
-  label!: string
+  label?: string
 
   @Column({ type: 'int', comment: '排序' })
-  sort!: number
+  sort?: number
 
   @Column({ type: 'varchar', comment: '展示值（默认都是string）' })
-  value!: string
+  value?: string
 
   @Column({ default: false, type: 'boolean', comment: '是否禁用' })
-  disabled!: boolean
+  disabled?: boolean
 
   @Column({ default: false, type: 'boolean', comment: '是否隐藏该项' })
-  hide!: boolean
+  hide?: boolean
 
   /**
    * 备注
@@ -30,9 +30,9 @@ export class DictDetail extends BaseEntity {
    * @memberof User
    */
   @Column({ nullable: true, comment: '备注' })
-  remark!: string
+  remark?: string
 
   @ManyToOne(() => Dict, d => d.detail, { onDelete: 'CASCADE' })
   @JoinColumn()
-  dict!: Dict[]
+  dict?: Dict
 }
