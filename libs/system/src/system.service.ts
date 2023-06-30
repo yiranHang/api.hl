@@ -48,7 +48,6 @@ export class SystemService {
     menu.isFull = true
     menu.isKeepAlive = true
     menu.sort = 2
-    menu.permission = this.getBasePermission()
     return menu
   }
 
@@ -62,7 +61,6 @@ export class SystemService {
     menu.component = '/home/index'
     menu.isKeepAlive = true
     menu.sort = 1
-    menu.permission = this.getBasePermission()
     return menu
   }
 
@@ -91,7 +89,7 @@ export class SystemService {
   }
 
   private getEchartsParentEntity() {
-    const menu = new Menu()
+    const menu: Menu = new Menu()
     menu.isLeaf = false
     menu.icon = 'TrendCharts'
     menu.title = 'Echarts'
@@ -413,7 +411,7 @@ export class SystemService {
       permission.name = key.name
       permission.code = key.code
       permission.menu = me ? me : (mu as Menu)
-      permission.path = this.getCompletePath(key.path || `${mu.url}/:id`)
+      permission.path = this.getCompletePath(key.path || `${mu.path}/:id`)
       permission.method = key.method
       permissions.push(permission)
     }
@@ -482,7 +480,12 @@ export class SystemService {
 
         /**新增默认 首页 菜单 */
         const homeParent = this.getHomeEntity()
-        const homeMenu = await this.setParentMenu(queryRunner.manager, homeParent)
+        const homeMenu: Menu & { url?: string } = await this.setParentMenu(
+          queryRunner.manager,
+          homeParent
+        )
+        homeMenu.permission = this.getBasePermission()
+        homeMenu.url = '/home'
         await this.setPermission(
           queryRunner.manager,
           role,
@@ -491,7 +494,12 @@ export class SystemService {
 
         /**新增默认 数据大屏 菜单 */
         const dataScreenParent = this.getDataScreenEntity()
-        const dataScreenMenu = await this.setParentMenu(queryRunner.manager, dataScreenParent)
+        const dataScreenMenu: Menu & { url?: string } = await this.setParentMenu(
+          queryRunner.manager,
+          dataScreenParent
+        )
+        dataScreenMenu.permission = this.getBasePermission()
+        dataScreenMenu.url = '/dataScreen'
         await this.setPermission(
           queryRunner.manager,
           role,
