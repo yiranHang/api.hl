@@ -8,10 +8,10 @@ import { Menu } from '../menu/menu.entity'
   }
 })
 export class Permission extends BaseEntity {
-  @Column({ type: 'varchar', nullable: true, comment: '权限名' })
+  @Column({ type: 'varchar', comment: '权限名' })
   name?: string
 
-  @Column({ type: 'varchar', nullable: true, comment: '权限代码' })
+  @Column({ type: 'varchar', comment: '权限代码' })
   code?: string
 
   @Column({

@@ -10,7 +10,7 @@ export class Dict extends BaseEntity {
   @Column({ unique: true, type: 'varchar', comment: '字典唯一key' })
   key?: string
 
-  @Column({ type: 'varchar', nullable: true, comment: '字典名称' })
+  @Column({ type: 'varchar', comment: '字典名称' })
   name?: string
 
   @Column({ default: false, type: 'boolean', comment: '是否禁用' })
