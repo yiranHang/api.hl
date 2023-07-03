@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common'
-import { Equal, FindManyOptions, FindOptionsWhere, Like } from 'typeorm'
+import { FindManyOptions, FindOptionsWhere, Like } from 'typeorm'
 import { Pages, QueryEntity } from '../system.type'
 import { DictDetailRepository, DictRepository } from './dict.repository'
 import { Dict } from './dict.entity'
