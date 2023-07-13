@@ -48,6 +48,7 @@ export class MenuController {
     return this.service.checkPathExists(decodeURIComponent(path), id)
   }
 
+  @ExcludePropertyAcl()
   @Get('/tree/:user')
   getTreeMenuByUser(@Param('user') user: string) {
     return this.service.getRoleMenuAclByUser(user)

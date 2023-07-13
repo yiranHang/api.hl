@@ -19,22 +19,6 @@ database:
     autoLoadEntities: true
     synchronize: true
 
-water-special:
-  key: '9C6E609AF75BD11D046A32B3FC19B328'
-  baseUrl: https://api.wspms.kalendsoft.com/v1
-  getToken: /transmission/getToken # 专项登录地址
-  getSumData: /transmission/getSumData
-  getTypeYear: /transmission/getTypeYear
-  getStageSumData: /transmission/getStageSumData
-
-pollute-govern:
-  key: '6CA353E3E4FD4006A46CB68E35910601'
-  baseUrl: https://api.sewage.kalendsoft.com/v1 #https://api.sewage.kalendsoft.com/v1/
-  getToken: /transmission/getToken
-  getNWInstallation: /transmission/getNWInstallation #选择区获取就地、纳管信息
-  getNWCount: /transmission/getNWCount #统计上海市2022年就地、纳管设施和督查信息
-  getNWDisposeRate: /transmission/getNWDisposeRate #获取九个区处理率
-  getNWSpecial: /transmission/getNWSpecial #获取九个区在建项目数
-  getNWInspector: /transmission/getNWInspector #获取上海市及九个区督查信息
-  getAllIncludeInstallation: /transmission/getNWAllBase #2022年纳管全部点位信息
-  getAllBaseInstallation: /transmission/getNWAllInclude #2022年就地全部点位信息
+redis:
+  host: 127.0.0.1
+  port: 6379

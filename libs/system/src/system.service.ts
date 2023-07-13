@@ -48,6 +48,7 @@ export class SystemService {
     menu.isFull = true
     menu.isKeepAlive = true
     menu.sort = 2
+    menu.permission = this.getBasePermission()
     return menu
   }
 
@@ -61,6 +62,7 @@ export class SystemService {
     menu.component = '/home/index'
     menu.isKeepAlive = true
     menu.sort = 1
+    menu.permission = this.getBasePermission()
     return menu
   }
 
@@ -107,12 +109,34 @@ export class SystemService {
         title: '菜单管理',
         name: 'menuManage',
         path: this.getLink('menuManage'),
-        url: '/menu',
         icon: 'Menu',
         component: '/system/menuManage/index',
         sort: 3,
         permission: [
-          ...this.getBasePermission(),
+          {
+            method: 'post',
+            code: 'post',
+            name: '新增',
+            path: '/menu'
+          },
+          {
+            method: 'post',
+            code: 'delete',
+            name: '删除',
+            path: '/menu/delete'
+          },
+          {
+            method: 'get',
+            code: 'get',
+            name: '获取',
+            path: '/menu'
+          },
+          {
+            method: 'patch',
+            code: 'patch',
+            name: '更新',
+            path: '/menu/:id'
+          },
           {
             method: 'get',
             code: 'permission_get',
@@ -143,30 +167,40 @@ export class SystemService {
         isLeaf: true,
         title: '用户管理',
         path: this.getLink('userManage'),
-        url: '/user',
         name: 'userManage',
         icon: 'Menu',
         component: '/system/userManage/index',
         sort: 1,
         permission: [
-          ...this.getBasePermission(),
+          {
+            method: 'post',
+            code: 'post',
+            name: '新增',
+            path: '/user'
+          },
+          {
+            method: 'post',
+            code: 'delete',
+            name: '删除',
+            path: '/user/delete'
+          },
+          {
+            method: 'get',
+            code: 'get',
+            name: '获取',
+            path: '/user'
+          },
+          {
+            method: 'patch',
+            code: 'patch',
+            name: '更新',
+            path: '/user/:id'
+          },
           {
             method: 'patch',
             code: 'update_password',
             name: '密码修改',
             path: '/user/password/:id'
-          },
-          {
-            method: 'get',
-            code: 'acl_get',
-            name: '查看权限',
-            path: '/permission/acl/router'
-          },
-          {
-            method: 'post',
-            code: 'acl_config',
-            name: '配置权限',
-            path: '/permission/update'
           }
         ]
       },
@@ -174,24 +208,70 @@ export class SystemService {
         isLeaf: true,
         title: '角色管理',
         path: this.getLink('roleManage'),
-        url: '/role',
         name: 'roleManage',
         icon: 'Menu',
         component: '/system/roleManage/index',
         sort: 2,
-        permission: this.getBasePermission()
+        permission: [
+          {
+            method: 'post',
+            code: 'post',
+            name: '新增',
+            path: '/role'
+          },
+          {
+            method: 'post',
+            code: 'delete',
+            name: '删除',
+            path: '/role/delete'
+          },
+          {
+            method: 'get',
+            code: 'get',
+            name: '获取',
+            path: '/role'
+          },
+          {
+            method: 'patch',
+            code: 'patch',
+            name: '更新',
+            path: '/role/:id'
+          }
+        ]
       },
       {
         isLeaf: true,
         title: '字典管理',
         path: this.getLink('dictManage'),
-        url: '/dict',
         name: 'dictManage',
         icon: 'Menu',
         component: '/system/dictManage/index',
         sort: 5,
         permission: [
-          ...this.getBasePermission(),
+          {
+            method: 'post',
+            code: 'post',
+            name: '新增',
+            path: '/dict'
+          },
+          {
+            method: 'post',
+            code: 'delete',
+            name: '删除',
+            path: '/dict/delete'
+          },
+          {
+            method: 'get',
+            code: 'get',
+            name: '获取',
+            path: '/dict'
+          },
+          {
+            method: 'patch',
+            code: 'patch',
+            name: '更新',
+            path: '/dict/:id'
+          },
           {
             method: 'post',
             code: 'add_detail',
@@ -199,10 +279,22 @@ export class SystemService {
             path: '/dict/detail/one'
           },
           {
-            method: 'post',
-            code: 'detail_handle',
-            name: '详情操作',
+            method: 'patch',
+            code: 'edit_detail',
+            name: '详情修改',
+            path: '/dict/detail/one/:id'
+          },
+          {
+            method: 'get',
+            code: 'get_detail',
+            name: '详情查看',
             path: '/dict/detail/one'
+          },
+          {
+            method: 'delete',
+            code: 'edit_detail',
+            name: '详情删除',
+            path: '/dict/detail/one/delete'
           }
         ]
       }
@@ -399,19 +491,14 @@ export class SystemService {
     return `/${route.join('/')}`
   }
 
-  async setPermission(
-    manager: EntityManager,
-    role: Role,
-    mu: Partial<Menu> & { url: string },
-    me?: Menu
-  ) {
+  async setPermission(manager: EntityManager, role: Role, mu: Menu, me?: Menu) {
     const permissions: Permission[] = []
     for (const key of mu.permission as Permission[]) {
       const permission = new Permission()
       permission.name = key.name
       permission.code = key.code
       permission.menu = me ? me : (mu as Menu)
-      permission.path = this.getCompletePath(key.path || `${mu.path}/:id`)
+      permission.path = key.path
       permission.method = key.method
       permissions.push(permission)
     }
@@ -434,7 +521,7 @@ export class SystemService {
       men.sort = mu.sort
       men.parent = me
       const m = await manager.save(Menu, men)
-      await this.setPermission(manager, role, mu as Partial<Menu> & { url: string }, m)
+      await this.setPermission(manager, role, mu, m)
     }
   }
 
@@ -486,11 +573,7 @@ export class SystemService {
         )
         homeMenu.permission = this.getBasePermission()
         homeMenu.url = '/home'
-        await this.setPermission(
-          queryRunner.manager,
-          role,
-          homeMenu as Partial<Menu> & { url: string }
-        )
+        await this.setPermission(queryRunner.manager, role, homeMenu)
 
         /**新增默认 数据大屏 菜单 */
         const dataScreenParent = this.getDataScreenEntity()
@@ -500,11 +583,7 @@ export class SystemService {
         )
         dataScreenMenu.permission = this.getBasePermission()
         dataScreenMenu.url = '/dataScreen'
-        await this.setPermission(
-          queryRunner.manager,
-          role,
-          dataScreenMenu as Partial<Menu> & { url: string }
-        )
+        await this.setPermission(queryRunner.manager, role, dataScreenMenu)
 
         /**新增默认系统管理-菜单管理 */
         const systemParent = this.getSystemParentEntity()

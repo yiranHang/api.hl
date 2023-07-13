@@ -2,7 +2,9 @@ import { JwtLogin, Loginer } from '@admin-api/auth'
 import { Body, Controller, Get, Post } from '@nestjs/common'
 import { OaToken } from '@admin-api/oa'
 import { PassPortService } from './passport.service'
+import { ExcludeControllerAcl } from '@admin-api/system'
 
+@ExcludeControllerAcl()
 @Controller('passport')
 export class PassPortController {
   constructor(private readonly service: PassPortService) {}

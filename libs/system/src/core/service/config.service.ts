@@ -25,22 +25,26 @@ export class ConfigService {
       {
         method: 'post',
         code: 'post',
-        name: '新增'
+        name: '新增',
+        path: '*'
       },
       {
         method: 'delete',
         code: 'delete',
-        name: '删除'
+        name: '删除',
+        path: '*'
       },
       {
         method: 'get',
         code: 'get',
-        name: '获取'
+        name: '获取',
+        path: '*'
       },
       {
         method: 'patch',
         code: 'patch',
-        name: '更新'
+        name: '更新',
+        path: '*'
       }
     ]
   }
@@ -77,7 +81,7 @@ export class ConfigService {
    * @param name
    * @returns
    */
-  getSoftDelete(name: 'department' | 'user' | 'role' | 'menu') {
+  getSoftDelete(name: 'user' | 'role') {
     const { softDelete } = this.option || {}
     if (typeof softDelete === 'object') {
       return !!softDelete[name]

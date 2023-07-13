@@ -1,15 +1,16 @@
 import { AuthModule } from '@admin-api/auth'
-import { ConfigModule, ConfigProvider } from '@admin-api/common'
+import { ConfigModule, ConfigProvider, RedisModule } from '@admin-api/common'
 import { DataBaseModule } from '@admin-api/database'
 import { DocumentsModule, NoSafe } from '@admin-api/documents'
 import { OaModule, OAOption } from '@admin-api/oa'
 import { CryptoUtil, SystemModule, UserRepository } from '@admin-api/system'
 import { Module } from '@nestjs/common'
-
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { PassPortModule } from './login/passport.module'
 import { PassPortService } from './login/passport.service'
+import { redisStore } from 'cache-manager-redis-store'
+import { CacheStore } from '@nestjs/cache-manager'
 
 @Module({
   imports: [
@@ -22,7 +23,6 @@ import { PassPortService } from './login/passport.service'
         })
         return dbconfig
       },
-
       inject: [ConfigProvider]
     }),
     DocumentsModule.forRoot({
@@ -32,7 +32,7 @@ import { PassPortService } from './login/passport.service'
       softDelete: {
         user: true
       },
-      acl: false
+      acl: true
     }),
     AuthModule.forRootAsync({
       useFactory: (user: UserRepository) => {
@@ -42,6 +42,24 @@ import { PassPortService } from './login/passport.service'
         }
       },
       inject: [UserRepository]
+    }),
+    RedisModule.registerAsync({
+      imports: [ConfigModule.forRoot()],
+      useFactory: async (config: ConfigProvider) => {
+        const option = config.get('redis') as NoSafe
+        const store = await redisStore({
+          socket: {
+            host: option.host,
+            port: option.port
+          },
+          password: option.password
+        })
+        return {
+          store: store as unknown as CacheStore,
+          ttl: 0
+        }
+      },
+      inject: [ConfigProvider]
     }),
     OaModule.forRootAsync({
       imports: [AppModule],

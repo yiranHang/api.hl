@@ -16,7 +16,7 @@ export class GlobalAuthGuard implements CanActivate {
   }
 
   async isOk(context: ExecutionContext): Promise<boolean> {
-    let isOk: boolean | void
+    let isOk!: boolean | void
     for (const g of this.guard) {
       try {
         if (g.canActivate(context) instanceof Promise) {

@@ -8,13 +8,15 @@ import { Permission } from '../permission/permission.entity'
 import { DataBaseSource, NoSafe } from '@admin-api/database'
 import { groupBy } from 'underscore'
 import { User } from '../user/user.entity'
+import { RedisService } from '@admin-api/common'
 
 @Injectable()
 export class MenuService {
   constructor(
     readonly repo: MenuRepository,
     private config: ConfigService,
-    private dataSource: DataBaseSource
+    private dataSource: DataBaseSource,
+    private redis: RedisService
   ) {}
 
   private getPage(pi: number, ps: number) {
@@ -264,6 +266,7 @@ export class MenuService {
         .addSelect('menu.path', 'path')
         .addSelect('permissions.code', 'code')
         .addSelect(`menu.path||':'||permissions.code`, 'acl')
+        .addSelect(`permissions.method||':'||permissions.path`, 'api')
         .leftJoin('u.roles', 'role')
         .leftJoin('role.permissions', 'permissions')
         .leftJoin('permissions.menu', 'menu')
@@ -271,6 +274,11 @@ export class MenuService {
         .getRawMany()
     ).filter(r => !r.forbidden)
     const acl = Object.keys(groupBy(data, 'acl'))
+    const api = Object.keys(groupBy(data, 'api')).map(r => ({
+      method: r.split(':')[0].toUpperCase(),
+      path: r.split(':')[1]
+    }))
+    this.redis.set(`api:${id}`, JSON.stringify(api))
     const menu = await this.getTreeMenus(acl)
     if (!menu || !menu.length) {
       throw new UnauthorizedException('您当前账号没有权限访问该平台')

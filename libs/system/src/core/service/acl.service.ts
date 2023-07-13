@@ -111,7 +111,7 @@ export class AclService implements OnModuleInit {
     const setRouteMetadata = (r: RouteInfo & { isExcule: boolean }) => {
       const { requestMethod, pathRegex } = mapToExcludeRoute([r])[0]
       if (AclService.routeMetadata[requestMethod]) {
-        AclService!.routeMetadata[requestMethod].push({
+        AclService.routeMetadata[requestMethod].push({
           isExcule: r.isExcule,
           path: pathRegex
         })
@@ -138,21 +138,14 @@ export class AclService implements OnModuleInit {
       const exculePath = this.getRouteInfos(c.instance.constructor)
       metadataScanner.scanFromPrototype(c.instance, prototype, (name: string) => {
         const descriptor = prototype[name]
-        return this.getPathVersinMethod(c.instance.constructor, descriptor).forEach(
-          (
-            r: RouteInfo & {
-              isExcule: boolean
-            }
-          ) => {
-            const isExcule = isExclude
-              ? true
-              : exculePath.some(e => e.method === r.method && e.path === r.path)
+        return this.getPathVersinMethod(c.instance.constructor, descriptor).forEach(r => {
+          const isExcule = isExclude
+            ? true
+            : exculePath.some(e => e.method === r.method && e.path === r.path)
 
-            r.isExcule = isExcule
-            router.data.push(r)
-            setRouteMetadata(r)
-          }
-        )
+          router.data.push({ ...r, isExcule })
+          setRouteMetadata({ ...r, isExcule })
+        })
       })
       const isHas = this.routers.findIndex(r => r.name === getControllerName(name))
       if (isHas < 0) {

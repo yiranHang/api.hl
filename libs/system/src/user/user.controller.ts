@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestj
 import { QueryEntity } from '../system.type'
 import { User } from './user.entity'
 import { UserService } from './user.service'
+import { ExcludePropertyAcl } from '../system.decorator'
 
 @Controller('user')
 export class UserController {
@@ -53,6 +54,7 @@ export class UserController {
     return this.service.deleteData(ids)
   }
 
+  @ExcludePropertyAcl()
   @Get('/router/choose')
   getRouterChoose() {
     return this.service.getRouterChoose()
