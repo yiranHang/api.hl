@@ -1,5 +1,5 @@
 import { AuthModule } from '@admin-api/auth'
-import { ConfigModule, ConfigProvider, RedisModule } from '@admin-api/common'
+import { ConfigModule, ConfigService, RedisModule } from '@admin-api/common'
 import { DataBaseModule } from '@admin-api/database'
 import { DocumentsModule, NoSafe } from '@admin-api/documents'
 import { OaModule, OAOption } from '@admin-api/oa'
@@ -15,16 +15,16 @@ import { LoggerModule } from '@admin-api/logger'
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     DataBaseModule.forRootAsync({
-      imports: [ConfigModule.forRoot()],
-      useFactory: (config: ConfigProvider) => {
+      useFactory: (config: ConfigService) => {
         const dbconfig: NoSafe[] = config.get('database')
         dbconfig.forEach((item: NoSafe) => {
           item.password = CryptoUtil.sm4Decrypt(item.password)
         })
         return dbconfig
       },
-      inject: [ConfigProvider]
+      inject: [ConfigService]
     }),
     DocumentsModule.forRoot({
       noEtag: false
@@ -45,8 +45,7 @@ import { LoggerModule } from '@admin-api/logger'
       inject: [UserRepository]
     }),
     RedisModule.registerAsync({
-      imports: [ConfigModule.forRoot()],
-      useFactory: async (config: ConfigProvider) => {
+      useFactory: async (config: ConfigService) => {
         const option = config.get('redis') as NoSafe
         const store = await redisStore({
           socket: {
@@ -60,7 +59,7 @@ import { LoggerModule } from '@admin-api/logger'
           ttl: 0
         }
       },
-      inject: [ConfigProvider]
+      inject: [ConfigService]
     }),
     OaModule.forRootAsync({
       imports: [AppModule],
