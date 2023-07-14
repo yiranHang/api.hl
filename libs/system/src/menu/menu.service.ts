@@ -266,7 +266,7 @@ export class MenuService {
         .addSelect('menu.path', 'path')
         .addSelect('permissions.code', 'code')
         .addSelect(`menu.path||':'||permissions.code`, 'acl')
-        .addSelect(`permissions.method||':'||permissions.path`, 'api')
+        .addSelect(`permissions.method||'#'||permissions.path`, 'api')
         .leftJoin('u.roles', 'role')
         .leftJoin('role.permissions', 'permissions')
         .leftJoin('permissions.menu', 'menu')
@@ -275,8 +275,8 @@ export class MenuService {
     ).filter(r => !r.forbidden)
     const acl = Object.keys(groupBy(data, 'acl'))
     const api = Object.keys(groupBy(data, 'api')).map(r => ({
-      method: r.split(':')[0].toUpperCase(),
-      path: r.split(':')[1]
+      method: r.split('#')[0].toUpperCase(),
+      path: r.split('#')[1]
     }))
     this.redis.set(`api:${id}`, JSON.stringify(api))
     const menu = await this.getTreeMenus(acl)

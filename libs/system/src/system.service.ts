@@ -236,6 +236,12 @@ export class SystemService {
             code: 'patch',
             name: '更新',
             path: '/role/:id'
+          },
+          {
+            method: 'get',
+            code: 'permission_get',
+            name: '权限列表查看',
+            path: '/menu/permission/tree'
           }
         ]
       },
