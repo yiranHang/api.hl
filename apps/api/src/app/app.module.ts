@@ -11,6 +11,7 @@ import { PassPortModule } from './login/passport.module'
 import { PassPortService } from './login/passport.service'
 import { redisStore } from 'cache-manager-redis-store'
 import { CacheStore } from '@nestjs/cache-manager'
+import { LoggerModule } from '@admin-api/logger'
 
 @Module({
   imports: [
@@ -71,6 +72,10 @@ import { CacheStore } from '@nestjs/cache-manager'
         } as unknown as OAOption
       },
       inject: [PassPortService]
+    }),
+    LoggerModule.forRoot({
+      console: true,
+      levels: ['log', 'error', 'warn', 'debug', 'verbose']
     }),
     PassPortModule
   ],

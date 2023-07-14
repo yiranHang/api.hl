@@ -18,8 +18,9 @@ import { QueryEntity, TFileOption } from './type'
 import { Response } from 'express'
 import { Documents } from './documents.entity'
 import { WhiteAuthGuard } from '@admin-api/auth'
-import { ExcludePropertyAcl } from '@admin-api/system'
+import { ExcludeControllerAcl } from '@admin-api/system'
 
+@ExcludeControllerAcl()
 @Controller('documents')
 export class DocumentsController {
   constructor(private service: DocumentsService) {}
@@ -43,7 +44,6 @@ export class DocumentsController {
   }
 
   @UseGuards(WhiteAuthGuard)
-  @ExcludePropertyAcl()
   @Get('preview/:id')
   previewFile(@Param('id') id: string, @Res() res: Response) {
     return this.service.previewFile(id, res)

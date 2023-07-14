@@ -38,12 +38,6 @@ export class UserController {
     return this.service.updatePassword(id, password)
   }
 
-  //清空token的数据
-  @Patch(':id')
-  updateToken(@Param('id') id: string) {
-    return this.service.updatePassword(id, '')
-  }
-
   @Post()
   createOne(@Body() body: User) {
     return this.service.createOne(body)
