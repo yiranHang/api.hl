@@ -1,10 +1,10 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm'
 
 /**
- * 开澜配置信息选项
+ * 配置信息选项
  *
  * @export
- * @type KalendConfigOption
+ * @type ConfigOption
  */
 export type ConfigOption = {
   /**
@@ -22,7 +22,7 @@ export type ConfigOption = {
 }
 
 /**
- * 开澜配置信息
+ * 配置信息
  *
  * @export
  * @interface Config
@@ -34,14 +34,14 @@ export interface Config {
    * 数据库配置信息
    *
    * @type {TDataBase[]}
-   * @memberof KalendConfig
+   * @memberof Config
    */
-  databases?: TDataBase[]
+  database?: TDataBase[]
   /**
    * Redis配置信息
    *
    * @type {IRedis}
-   * @memberof KalendConfig
+   * @memberof Config
    */
   redis?: IRedis
 }

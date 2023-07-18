@@ -1,5 +1,5 @@
 import { AuthModule } from '@admin-api/auth'
-import { ConfigModule, ConfigService, RedisModule } from '@admin-api/common'
+import { ConfigModule, ConfigService, IRedis, RedisModule, TDataBase } from '@admin-api/common'
 import { DataBaseModule } from '@admin-api/database'
 import { DocumentsModule, NoSafe } from '@admin-api/documents'
 import { OaModule, OAOption } from '@admin-api/oa'
@@ -18,7 +18,7 @@ import { LoggerModule } from '@admin-api/logger'
     ConfigModule.forRoot(),
     DataBaseModule.forRootAsync({
       useFactory: (config: ConfigService) => {
-        const dbconfig: NoSafe[] = config.get('database')
+        const dbconfig = config.get('database') as TDataBase[]
         dbconfig.forEach((item: NoSafe) => {
           item.password = CryptoUtil.sm4Decrypt(item.password)
         })
@@ -46,13 +46,13 @@ import { LoggerModule } from '@admin-api/logger'
     }),
     RedisModule.registerAsync({
       useFactory: async (config: ConfigService) => {
-        const option = config.get('redis') as NoSafe
+        const option = config.get('redis') as IRedis
         const store = await redisStore({
           socket: {
-            host: option.host,
-            port: option.port
+            host: option?.host,
+            port: option?.port
           },
-          password: option.password
+          password: option?.password
         })
         return {
           store: store as unknown as CacheStore,

@@ -99,7 +99,7 @@ export class ConfigService {
   }
 
   /**所有信息 */
-  get(key?: string) {
-    return key ? this.yaml?.[key] || null : this.yaml
+  get(key?: 'application' | 'logger' | 'database' | 'redis') {
+    return key ? this.yaml[key] || null : this.yaml
   }
 }
