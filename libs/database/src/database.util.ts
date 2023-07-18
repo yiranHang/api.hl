@@ -39,7 +39,7 @@ export const mapTypeOrmOption = (options: ITypeOrmModuleOptions | ITypeOrmModule
 /**
  * 合并Repository
  */
-const megreRepository = <S, T>(source: { new (...arg: NoSafe[]): S }, target: T) => {
+const megreRepository = <S, T extends {}>(source: { new (...arg: NoSafe[]): S }, target: T) => {
   const method: NoSafe = source.prototype
   const propertyNames = Object.getOwnPropertyNames(method)
   propertyNames.map(name => {
