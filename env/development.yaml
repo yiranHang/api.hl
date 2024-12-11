@@ -23,11 +23,12 @@ database:
     host: localhost
     port: 5432
     database: admin
-    username: postgres
-    password: e850525c1bf9272d6f9d3426f4f51f7f
+    username: hanglin
+    password: c47926821aa3c2217997999f7fa59483
     autoLoadEntities: true
     synchronize: true
 
 redis:
   host: 127.0.0.1
   port: 6379
+  password: c47926821aa3c2217997999f7fa59483

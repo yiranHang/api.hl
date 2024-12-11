@@ -19,6 +19,7 @@ import { LoggerModule } from '@admin-api/logger'
     DataBaseModule.forRootAsync({
       useFactory: (config: ConfigService) => {
         const dbconfig = config.get('database') as TDataBase[]
+        console.log(CryptoUtil.sm4Encrypt('Hanglin@123'))
         dbconfig.forEach((item: NoSafe) => {
           item.password = CryptoUtil.sm4Decrypt(item.password)
         })
@@ -52,7 +53,7 @@ import { LoggerModule } from '@admin-api/logger'
             host: option?.host,
             port: option?.port
           },
-          password: option?.password
+          password: CryptoUtil.sm4Decrypt(option?.password)
         })
         return {
           store: store as unknown as CacheStore,
