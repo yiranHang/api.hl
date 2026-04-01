@@ -1,7 +1,7 @@
 # 应用配置
 application:
   host: localhost
-  port: 4001
+  port: 4000
   passport:
     secret: secretKey
     expiresIn: 24h
@@ -10,7 +10,7 @@ database:
   - type: postgres
     host: localhost
     port: 5432
-    database: admin.hl
+    database: admin
     username: postgres
     password: c47926821aa3c2217997999f7fa59483
     autoLoadEntities: true
@@ -19,4 +19,3 @@ database:
 redis:
   host: 127.0.0.1
   port: 6379
-  password: Hanglin@123
