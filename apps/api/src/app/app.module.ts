@@ -53,7 +53,7 @@ import { LoggerModule } from '@admin-api/logger'
             host: option?.host,
             port: option?.port
           },
-          password: CryptoUtil.sm4Decrypt(option?.password)
+          password: option?.password
         })
         return {
           store: store as unknown as CacheStore,

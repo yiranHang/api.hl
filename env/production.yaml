@@ -8,7 +8,7 @@ application:
 # 数据库配置
 database:
   - type: postgres
-    host: localhost
+    host: my-postgres
     port: 5432
     database: admin
     username: postgres
@@ -17,5 +17,6 @@ database:
     synchronize: true
 
 redis:
-  host: 127.0.0.1
+  host: my-redis
   port: 6379
+  password: Hanglin@123

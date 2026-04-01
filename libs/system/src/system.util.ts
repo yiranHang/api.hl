@@ -31,6 +31,7 @@ export class CryptoUtil {
    * SM4 解密
    */
   static sm4Decrypt(val: string) {
+    if (!val) return val
     const data = SM4.decrypt(val, this.key, {
       inputEncoding: 'hex',
       outputEncoding: 'utf-8'
