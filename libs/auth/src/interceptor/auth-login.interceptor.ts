@@ -19,25 +19,21 @@ export class AuthLoginInterceptor<T = unknown> implements NestInterceptor<T, unk
         const { tokenName, sign } = this.auth.getOptionByHandle(
           context.getHandler() as TFunction<TJwtOption>
         )
-        const callBack: Record<string, unknown> = {
-          user: data
-        }
+        const callBack: Record<string, unknown> = {}
+        // 确保 user 字段始终存在（即使 data 为 null 也显式写入，避免 JSON 序列化静默丢弃）
+        callBack['user'] = data ?? null
         if (this.jwt?.sign) {
           if (sign && typeof sign === 'function') {
             callBack[tokenName] = sign(this.jwt, data) as CustomSign
           } else if (isNotEmptyObject(data) && Array.isArray(sign)) {
-            if (!sign.includes('id')) {
-              sign.push('id')
-            }
+            // 避免直接 mutate 共享的 sign 数组
+            const signFields = sign.includes('id') ? [...sign] : [...sign, 'id']
             const params: Record<string, string | null> = {}
-            sign.forEach(o => {
+            signFields.forEach(o => {
               params[o] = data[o] || null
             })
             callBack[tokenName] = this.jwt.sign(params)
           }
-          // if (this.cache && data?.id && single && callBack[tokenName]) {
-          //   this.setCache(data?.id, callBack[tokenName] as string, ttl);
-          // }
         }
         return { data: callBack, code: 200 }
       })

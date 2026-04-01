@@ -18,7 +18,12 @@ export class AclMiddleware implements NestMiddleware {
   ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    const { path, method } = this.getCheckPath(req)
+    const checkPath = this.getCheckPath(req)
+    if (!checkPath) {
+      // 路径不在 ACL 元数据中（已被排除或未注册），直接放行
+      return next()
+    }
+    const { path, method } = checkPath
     const id = this.getUserId(req)
     if (id) {
       const acl = JSON.parse((await this.redis.get(`api:${id}`)) as string)
